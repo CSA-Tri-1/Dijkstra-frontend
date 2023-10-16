@@ -27,6 +27,7 @@ GEM
     faraday (0.17.6)
       multipart-post (>= 1.2, < 3)
     ffi (1.15.5)
+    ffi (1.15.5-x64-mingw-ucrt)
     forwardable-extended (2.6.0)
     gemoji (3.0.1)
     github-pages (228)
@@ -223,6 +224,8 @@ GEM
     multipart-post (2.3.0)
     nokogiri (1.15.3-x64-mingw-ucrt)
       racc (~> 1.4)
+    nokogiri (1.15.3-x86_64-linux)
+      racc (~> 1.4)
     octicons (19.5.0)
     octokit (4.22.0)
       faraday (>= 0.9)
@@ -265,6 +268,7 @@ GEM
 
 PLATFORMS
   x64-mingw-ucrt
+  x86_64-linux
 
 DEPENDENCIES
   faraday (< 1.0)
