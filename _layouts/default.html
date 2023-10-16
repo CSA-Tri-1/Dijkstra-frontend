@@ -23,7 +23,20 @@
   <body>
     {% include header.html %}
     <main>
-      {{ content }}
+      <body class="landing-page">
+        <div class="wrapper">
+          <div class="section section-hero1 section-shaped">
+            <div class="bar shape-default">
+            </div>
+          </div>
+          <div class="section features-1">
+            <div class="container">
+              {{ content }}
+            </div>
+          </div>
+          <br /><br />
+        </div>
+      </body>
     </main>
     {% include footer.html %}
   </body>

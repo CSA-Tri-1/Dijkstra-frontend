@@ -27,6 +27,7 @@ GEM
     faraday (0.17.6)
       multipart-post (>= 1.2, < 3)
     ffi (1.15.5)
+    ffi (1.15.5-x64-unknown)
     forwardable-extended (2.6.0)
     gemoji (3.0.1)
     github-pages (228)
@@ -221,7 +222,9 @@ GEM
       jekyll-seo-tag (~> 2.1)
     minitest (5.19.0)
     multipart-post (2.3.0)
-    nokogiri (1.15.3-x64-mingw-ucrt)
+    nokogiri (1.15.3-x64-unknown)
+      racc (~> 1.4)
+    nokogiri (1.15.3-x86_64-linux)
       racc (~> 1.4)
     octicons (19.5.0)
     octokit (4.22.0)
@@ -264,7 +267,8 @@ GEM
     webrick (1.8.1)
 
 PLATFORMS
-  x64-mingw-ucrt
+  x64-unknown
+  x86_64-linux
 
 DEPENDENCIES
   faraday (< 1.0)
@@ -290,4 +294,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.4.18
+   2.4.19
