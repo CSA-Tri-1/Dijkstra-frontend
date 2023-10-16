@@ -1,0 +1,81 @@
+<footer class="footer">
+  <div class="container">
+    <div class="row align-items-center justify-content-md-between">
+      <div class="col-md-6">
+        <div class="copyright">
+          &copy; 2023 <a href="" target="_blank">PopmintchevLABS</a>.
+        </div>
+      </div>
+      <div class="col-md-6">
+        <ul class="nav nav-footer justify-content-end">
+          <li class="nav-item">
+            <a href="{{site.baseurl}}/pages/resources/aboutUs.html" class="nav-link">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a href="{{site.baseurl}}/pages/resources/privacypolicy.html" class="nav-link">Privacy Policy</a>
+          </li>
+          <li class="nav-item">
+            <a href="{{site.baseurl}}/pages/resources/contactus.html" class="nav-link">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+<!--   Core JS Files   -->
+<script src="{{site.baseurl}}/assets/js/core/jquery.min.js" type="text/javascript"></script>
+<script src="{{site.baseurl}}/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="{{site.baseurl}}/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="{{site.baseurl}}/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+<script src="{{site.baseurl}}/assets/js/plugins/bootstrap-switch.js"></script>
+<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<script src="{{site.baseurl}}/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+<script src="{{site.baseurl}}/assets/js/plugins/moment.min.js"></script>
+<script src="{{site.baseurl}}/assets/js/plugins/datetimepicker.js" type="text/javascript"></script>
+<script src="{{site.baseurl}}/assets/js/plugins/bootstrap-datepicker.min.js"></script>
+<!-- Control Center for Argon UI Kit: parallax effects, scripts for the example pages etc -->
+<!--  Google Maps Plugin    -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+<script src="{{site.baseurl}}/assets/js/argon-design-system.min.js?v=1.2.2" type="text/javascript"></script>
+<script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS &&
+    TrackJS.install({
+      token: "ee6fab19c5a04ac1a32a645abde4613a",
+      application: "argon-design-system-pro"
+    });
+
+    function dynamic_TextSize(className, origionalSize, size) {
+        var element_Font = size * origionalSize;
+        var elements = document.getElementsByClassName(className);
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            element.style.fontSize = element_Font + "px";
+        }
+    }
+    function dynamic_imgSize(idName, origionalHeight, origionalWidth, origionalTop, origionalLeft, size) {
+        var element = document.getElementById(idName);
+        var element_Height = size * origionalHeight;
+        element.style.width = element_Height + "px";
+        var element_Width = size * origionalWidth;
+        element.style.height = element_Width + "px";
+        var element_Top = size * origionalTop;
+        element.style.top = element_Top + "px";
+        var element_Left = size * origionalLeft;
+        element.style.left = element_Left + "px";
+    }
+
+    window.onresize = resize;
+    function resize () {
+      var current = window.innerWidth;
+      var size = Math.cbrt(window.innerWidth)/12.446168506412;
+      console.log(size)
+
+      dynamic_imgSize('profileImage1', 600, 600, 0, 0, size)
+      dynamic_imgSize('postImage', 600, 600, 0, 0, size)
+      dynamic_TextSize('display-1', 55, size)
+      dynamic_TextSize('display-4', 25, size)
+    };
+    window.onload = resize;
+</script>
