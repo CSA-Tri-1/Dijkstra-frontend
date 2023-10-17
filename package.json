@@ -1,18 +1,11 @@
 {
-  "name": "argon-design-system",
-  "description": "Bootstrap 4 Argon Design System",
+  "name": "DADDiJkstra-frontend",
+  "description": "DADDiJkstra Frontend",
   "version": "1.2.2",
-  "homepage": "http://creative-tim.com/product/argon-design-system",
-  "author": "Creative Tim",
-  "license": "Creative Tim License <www.creative-tim.com/license>",
+  "homepage": "https://github.com/orgs/CSA-Tri-1/projects/3/views/1",
+  "author": "DADDiJkstra",
+  "license": "MIT License",
   "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^6.1.0",
-    "gulp-clean": "^0.4.0",
-    "gulp-install": "^1.1.0",
-    "gulp-open": "^3.0.1",
-    "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.5",
     "tailwindcss": "^3.3.3"
   }
 }
