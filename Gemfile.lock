@@ -27,11 +27,7 @@ GEM
     faraday (0.17.6)
       multipart-post (>= 1.2, < 3)
     ffi (1.15.5)
-<<<<<<< HEAD
-    ffi (1.15.5-x64-unknown)
-=======
     ffi (1.15.5-x64-mingw-ucrt)
->>>>>>> a14c8085f88fbfe61b22f14133a35b61553ae236
     forwardable-extended (2.6.0)
     gemoji (3.0.1)
     github-pages (228)
@@ -273,11 +269,7 @@ GEM
     webrick (1.8.1)
 
 PLATFORMS
-<<<<<<< HEAD
-  x64-unknown
-=======
   x64-mingw-ucrt
->>>>>>> a14c8085f88fbfe61b22f14133a35b61553ae236
   x86_64-linux
 
 DEPENDENCIES
