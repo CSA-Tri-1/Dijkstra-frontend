@@ -3,3 +3,30 @@ layout: default
 title: App
 ---
 
+<style>
+  :root {
+    --bg-blue: #4666E5;
+    --toggle-height: 20px;
+    --toggle-width: 35px;
+  }
+  #interactive-graph {
+    border: 3px solid black;
+    border-radius: 10px;
+    margin: 0 auto;
+    top: 5%;
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.1/backbone.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.5/joint.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jointjs/dist/joint.min.css">
+<script type="module" src="{{ site.baseurl }}/assets/scripts/graph.js"></script>
+<!-- <script src="{{ site.baseurl }}/assets/scripts/controller.js"></script>
+<script src="{{ site.baseurl }}/assets/scripts/controllers/edit-controller.js"></script>
+<script src="{{ site.baseurl }}/assets/scripts/controllers/view-controller.js"></script> -->
+<p>testing canvas</p>
+<div id="interactive-graph"></div>
