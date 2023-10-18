@@ -221,8 +221,12 @@ function removeElement({ setStartView, setEndView, getStartView }, elementView) 
 }
 
 function addElement({ createNode, size }, _evt, x, y) {
-    const node = createNode(getNodeId());
+    const node = createNode(getNodeId(), x - size / 2, y - size / 2);
+    // let node_position = [x - size / 2, y - size / 2];
+    // nodes.push(node_position);
     node.position(x - size / 2, y - size / 2);
+    nodes_array.push(node);
+    // console.log(x - size / 2, y - size / 2)
 }
 
 const viewController = new ViewController({ paper });
@@ -235,10 +239,7 @@ function getNodeId() {
     return current_index;
 }
 
-let nodes = []
-let adjacent = []
-
-function createNode(id) {
+function createNode(id, Xcoord, Ycoord) {
     var node = new joint.shapes.standard.Circle({
         id,
         size: { width: 40, height: 40 },
@@ -247,7 +248,9 @@ function createNode(id) {
                 fill: 'black'
             },
             label: {
-                fill: 'white'
+                fill: 'white',
+                x: Xcoord,
+                y: Ycoord
             }
         }
     }).addTo(graph);
@@ -268,14 +271,14 @@ function createNode(id) {
     return node;
 }
 
-getNodeParameters(node)
+// getNodeParameters(node)
 
-function getNodeParameters(node) {
-    let nodeid = node.attributes.id
-    let nodeX = node.changed.position
-    let nodeY = node.attributes.position.y
-    console.log(nodeid, nodeX, nodeY)
-}
+// function getNodeParameters(node) {
+//     let nodeid = node.attributes.id
+//     let nodeX = node.changed.position
+//     let nodeY = node.attributes.position.y
+//     console.log(nodeid, nodeX, nodeY)
+// }
 
 // creating links between nodes on map
 function createLink(s, t) {
