@@ -253,7 +253,7 @@ function createLink(s, t) {
         source: { id: s },
         target: { id: t },
         z: 1,
-        distance: Math.sqrt((x1-x2)**2 + (y1-y2)**2),
+        distance: Math.ceil(Math.sqrt((x1-x2)**2 + (y1-y2)**2)*(20/Math.sqrt(400**2 + 800**2))),
         attrs: {
             wrapper: {
                 stroke: 'white',
@@ -267,7 +267,7 @@ function createLink(s, t) {
     link.appendLabel({
         attrs: {
             text: {
-                text: link.distance
+                text: link.attributes.distance
             }
         }
     });
@@ -283,8 +283,7 @@ function createLink(s, t) {
             new joint.linkTools.Remove({ distance: '10%' })
         ]
     }));
-    link.attr('label/text', link.distance);
-    console.log(link);``
+    console.log(link);
 
     view.hideTools();
 }
