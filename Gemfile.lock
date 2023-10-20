@@ -226,8 +226,6 @@ GEM
       racc (~> 1.4)
     nokogiri (1.15.3-x86_64-linux)
       racc (~> 1.4)
-    nokogiri (1.15.3-x86_64-linux)
-      racc (~> 1.4)
     octicons (19.5.0)
     octokit (4.22.0)
       faraday (>= 0.9)
