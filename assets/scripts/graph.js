@@ -206,6 +206,13 @@ function getNodeId() {
     return current_index;
 }
 
+function getNodefromId(id) {
+    for (let i = 0; i < nodes_array.length; i++) {
+        if (nodes_array[i].id == id) {
+            return nodes_array[i];
+        }
+    }
+}
 function createNode(id) {
     var node = new joint.shapes.standard.Circle({
         id,
@@ -236,11 +243,17 @@ function createNode(id) {
 
 // creating links between nodes on map
 function createLink(s, t) {
+    console.log("S: " + s)
+    let x1 = getNodefromId(s).attributes.position.x
+    let x2 = getNodefromId(t).attributes.position.x
+    let y1 = getNodefromId(s).attributes.position.y
+    let y2 = getNodefromId(t).attributes.position.y
     var link = new joint.shapes.standard.Link({
         id: [s, t].sort().join(),
         source: { id: s },
         target: { id: t },
         z: 1,
+        distance: Math.sqrt((x1-x2)**2 + (y1-y2)**2),
         attrs: {
             wrapper: {
                 stroke: 'white',
@@ -270,7 +283,6 @@ function createLink(s, t) {
             new joint.linkTools.Remove({ distance: '10%' })
         ]
     }));
-    link.distance = 10;
     link.attr('label/text', link.distance);
     console.log(link);``
 
