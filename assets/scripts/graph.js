@@ -77,41 +77,7 @@ const paper = new joint.dia.Paper({
 });
 
 var namespace = joint.shapes;
-
-// var graph = new joint.dia.Graph({}, { cellNamespace: namespace });
-
-// var paper = new joint.dia.Paper({
-//     el: document.getElementById('interactive-graph'),
-//     model: graph,
-//     width: 500,
-//     height: 500,
-//     gridSize: 1,
-//     cellViewNamespace: namespace
-// });
-
 var current_index = 0;
-
-// var node = new joint.shapes.standard.Circle();
-// node.position(100, 30);
-// node.resize(100, 40);
-// node.attr({
-//     body: {
-//         fill: 'black'
-//     },
-//     label: {
-//         fill: 'white'
-//     }
-// });
-// node.attr('label/text', '1');
-// node.addTo(graph)
-// var node2 = node.clone();
-// node2.translate(300, 0);
-// node2.attr('label/text', '2');
-// node2.addTo(graph)
-// var link = new joint.shapes.standard.Link();
-// link.source(node);
-// link.target(node2);
-// link.addTo(graph);
 
 class Controller extends joint.mvc.Listener {
     get context() {
@@ -207,6 +173,10 @@ function replaceLink({ createLink }, link, _collection, opt) {
         link.remove();
         createLink(sourceId, targetId);
     }
+    if (link.attributes.target.hasOwnProperty("id")) {
+        edge_array.push([link.attributes.source, link.attributes.target]);
+    }
+    
 }
 
 function removeElement({ setStartView, setEndView, getStartView }, elementView) {
@@ -222,11 +192,8 @@ function removeElement({ setStartView, setEndView, getStartView }, elementView) 
 
 function addElement({ createNode, size }, _evt, x, y) {
     const node = createNode(getNodeId(), x - size / 2, y - size / 2);
-    // let node_position = [x - size / 2, y - size / 2];
-    // nodes.push(node_position);
     node.position(x - size / 2, y - size / 2);
     nodes_array.push(node);
-    // console.log(x - size / 2, y - size / 2)
 }
 
 const viewController = new ViewController({ paper });
@@ -239,7 +206,7 @@ function getNodeId() {
     return current_index;
 }
 
-function createNode(id, Xcoord, Ycoord) {
+function createNode(id) {
     var node = new joint.shapes.standard.Circle({
         id,
         size: { width: 40, height: 40 },
@@ -248,9 +215,7 @@ function createNode(id, Xcoord, Ycoord) {
                 fill: 'black'
             },
             label: {
-                fill: 'white',
-                x: Xcoord,
-                y: Ycoord
+                fill: 'white'
             }
         }
     }).addTo(graph);
@@ -266,19 +231,8 @@ function createNode(id, Xcoord, Ycoord) {
     
     view.hideTools();
     node.attr('label/text', id);
-    console.log(node)
-    console.log(node.attributes.id, node.attributes.position.x, node.attributes.position.y)
     return node;
 }
-
-// getNodeParameters(node)
-
-// function getNodeParameters(node) {
-//     let nodeid = node.attributes.id
-//     let nodeX = node.changed.position
-//     let nodeY = node.attributes.position.y
-//     console.log(nodeid, nodeX, nodeY)
-// }
 
 // creating links between nodes on map
 function createLink(s, t) {
@@ -292,9 +246,19 @@ function createLink(s, t) {
                 stroke: 'white',
                 'stroke-width': 6
             },
-            line: { targetMarker: getTargetMarkerStyle(), stroke: outlineColor }
+            line: { targetMarker: getTargetMarkerStyle(), stroke: outlineColor } 
+        },
+        
+    });
+
+    link.appendLabel({
+        attrs: {
+            text: {
+                text: link.distance
+            }
         }
     });
+
     link.addTo(graph);
 
     console.log(link.attributes.id, link.attributes.type)
@@ -306,6 +270,9 @@ function createLink(s, t) {
             new joint.linkTools.Remove({ distance: '10%' })
         ]
     }));
+    link.distance = 10;
+    link.attr('label/text', link.distance);
+    console.log(link);``
 
     view.hideTools();
 }
