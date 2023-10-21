@@ -86,44 +86,43 @@ class Controller extends joint.mvc.Listener {
     }
   }
 
-class ViewController extends Controller {
-    startListening() {
-        const { paper } = this.context;
+// class ViewController extends Controller {
+//     startListening() {
+//         const { paper } = this.context;
 
-        this.listenTo(paper, {
-            'element:pointerdown': selectSource,
-            'element:mouseenter': selectEnd,
-            'element:mouseleave': hidePathOnMouseLeave,
-        });
-    }
-}
+//         this.listenTo(paper, {
+//             'element:pointerdown': selectSource,
+//             'element:mouseenter': selectEnd,
+//             'element:mouseleave': hidePathOnMouseLeave,
+//         });
+//     }
+// }
 
-function selectSource({ setStartView }, elementView) {
-    setStartView(elementView);
-}
+// function selectSource({ setStartView }, elementView) {
+//     setStartView(elementView);
+// }
 
-function selectEnd({ showPath, setEndView, getStartView, getEndView }, elementView) {
-    const pathStartView = getStartView();
-    const pathEndView = getEndView();
+// function selectEnd({ showPath, setEndView, getStartView, getEndView }, elementView) {
+//     const pathStartView = getStartView();
+//     const pathEndView = getEndView();
+//     if (elementView === pathStartView) return;
+//     if (pathStartView && pathEndView) {
+//         joint.highlighters.addClass.remove(pathStartView, invalidPathHighlightId);
+//         joint.highlighters.addClass.remove(pathEndView, invalidPathHighlightId);
+//     }
+//     setEndView(elementView);
+//     showPath();
+// }
 
-    if (elementView === pathStartView) return;
-    if (pathStartView && pathEndView) {
-        joint.highlighters.addClass.remove(pathStartView, invalidPathHighlightId);
-        joint.highlighters.addClass.remove(pathEndView, invalidPathHighlightId);
-    }
-    setEndView(elementView);
-    showPath();
-}
+// function hidePathOnMouseLeave({ hidePath, getStartView, getEndView, setEndView }) {
+//     const pathStartView = getStartView();
+//     const pathEndView = getEndView();
 
-function hidePathOnMouseLeave({ hidePath, getStartView, getEndView, setEndView }) {
-    const pathStartView = getStartView();
-    const pathEndView = getEndView();
-
-    hidePath();
-    if (pathStartView) joint.highlighters.addClass.remove(pathStartView, invalidPathHighlightId);
-    if (pathEndView) joint.highlighters.addClass.remove(pathEndView, invalidPathHighlightId);
-    setEndView(null);
-}
+//     hidePath();
+//     if (pathStartView) joint.highlighters.addClass.remove(pathStartView, invalidPathHighlightId);
+//     if (pathEndView) joint.highlighters.addClass.remove(pathEndView, invalidPathHighlightId);
+//     setEndView(null);
+// }
 
 
 class EditController extends Controller {
@@ -181,7 +180,7 @@ function replaceLink({ createLink }, link, _collection, opt) {
 
 function removeElement({ setStartView, setEndView, getStartView }, elementView) {
     const pathStart = getStartView();
-    console.log()
+    console.log(getStartView())
     if (elementView.model.id === pathStart.model.id) {
         setStartView(null);
         setEndView(null);
@@ -196,7 +195,7 @@ function addElement({ createNode, size }, _evt, x, y) {
     nodes_array.push(node);
 }
 
-const viewController = new ViewController({ paper });
+// const viewController = new ViewController({ paper });
 const editController = new EditController({ graph, paper, createLink, createNode, setStartView, setEndView, getStartView, size });
 
 editController.startListening();
@@ -288,56 +287,56 @@ function createLink(s, t) {
     view.hideTools();
 }
 
-function setStartView(elementView) {
-    hidePath();
-    if (startView) {
-        joint.highlighters.mask.remove(startView, highlightId);
-        joint.highlighters.addClass.remove(startView, invalidPathHighlightId);
-    }
+// function setStartView(elementView) {
+//     hidePath();
+//     if (startView) {
+//         joint.highlighters.mask.remove(startView, highlightId);
+//         joint.highlighters.addClass.remove(startView, invalidPathHighlightId);
+//     }
 
-    if (endView) {
-        joint.highlighters.addClass.remove(endView, invalidPathHighlightId);
-    }
+//     if (endView) {
+//         joint.highlighters.addClass.remove(endView, invalidPathHighlightId);
+//     }
 
-    if (elementView) {
-        joint.highlighters.mask.add(elementView, 'body', highlightId, startAttrs);
-    }
-    startView = elementView;
-}
+//     if (elementView) {
+//         joint.highlighters.mask.add(elementView, 'body', highlightId, startAttrs);
+//     }
+//     startView = elementView;
+// }
 
-function setEndView(elementView) {
-    endView = elementView;
-}
+// function setEndView(elementView) {
+//     endView = elementView;
+// }
 
-function toggleLinkStyle() {
-    if (linkStyle) paper.svg.removeChild(linkStyle);
+// function toggleLinkStyle() {
+//     if (linkStyle) paper.svg.removeChild(linkStyle);
 
-    // linkStyle = getLinkStyle();
-    paper.svg.prepend(linkStyle);
-}
+//     // linkStyle = getLinkStyle();
+//     paper.svg.prepend(linkStyle);
+// }
 
-const styles = V.createSVGStyle(`
-    .joint-element .${pathMemberClassName} {
-        stroke: ${blueColor};
-        fill: ${blueColor};
-        fill-opacity: 0.75;
-    }
-    .joint-element .${invalidPathClassName} {
-        stroke: ${invalidColor};
-        fill: ${invalidColor};
-        fill-opacity: 0.2;
-    }
-    @keyframes dash {
-        to {
-            stroke-dashoffset: 0;
-        }
-    }
-    @keyframes stroke {
-        to {
-            stroke: ${blueColor};
-        }
-    }
-`);
+// const styles = V.createSVGStyle(`
+//     .joint-element .${pathMemberClassName} {
+//         stroke: ${blueColor};
+//         fill: ${blueColor};
+//         fill-opacity: 0.75;
+//     }
+//     .joint-element .${invalidPathClassName} {
+//         stroke: ${invalidColor};
+//         fill: ${invalidColor};
+//         fill-opacity: 0.2;
+//     }
+//     @keyframes dash {
+//         to {
+//             stroke-dashoffset: 0;
+//         }
+//     }
+//     @keyframes stroke {
+//         to {
+//             stroke: ${blueColor};
+//         }
+//     }
+// `);
 
 // let linkStyle = getLinkStyle();
 
