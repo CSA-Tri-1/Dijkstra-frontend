@@ -141,6 +141,7 @@ class EditController extends Controller {
             'element:mouseleave': hideElementTools,
             'element:pointerdblclick': removeElement,
             'blank:pointerdblclick': addElement,
+            'element:pointerdown': changeWeight
         });
     }
 }
@@ -180,7 +181,7 @@ function replaceLink({ createLink }, link, _collection, opt) {
 
 function removeElement({ setStartView, setEndView, getStartView }, elementView) {
     const pathStart = getStartView();
-    console.log(getStartView())
+    // console.log(getStartView())
     if (elementView.model.id === pathStart.model.id) {
         setStartView(null);
         setEndView(null);
@@ -194,9 +195,12 @@ function addElement({ createNode, size }, _evt, x, y) {
     node.position(x - size / 2, y - size / 2);
     nodes_array.push(node);
 }
+function changeWeight() {
+    console.log(node)
+}
 
 // const viewController = new ViewController({ paper });
-const editController = new EditController({ graph, paper, createLink, createNode, setStartView, setEndView, getStartView, size });
+const editController = new EditController({ graph, paper, createLink, createNode, getStartView, size });
 
 editController.startListening();
 
@@ -212,6 +216,7 @@ function getNodefromId(id) {
         }
     }
 }
+
 function createNode(id) {
     var node = new joint.shapes.standard.Circle({
         id,
@@ -242,7 +247,7 @@ function createNode(id) {
 
 // creating links between nodes on map
 function createLink(s, t) {
-    console.log("S: " + s)
+    // console.log("S: " + s)
     let x1 = getNodefromId(s).attributes.position.x
     let x2 = getNodefromId(t).attributes.position.x
     let y1 = getNodefromId(s).attributes.position.y
@@ -273,7 +278,7 @@ function createLink(s, t) {
 
     link.addTo(graph);
 
-    console.log(link.attributes.id, link.attributes.type)
+    console.log(link.distance)
     
     var view = link.findView(paper);
     view.addTools(new joint.dia.ToolsView({
@@ -282,7 +287,9 @@ function createLink(s, t) {
             new joint.linkTools.Remove({ distance: '10%' })
         ]
     }));
-    console.log(link);
+    // console.log(link);
+
+    edge_array.push();
 
     view.hideTools();
 }
