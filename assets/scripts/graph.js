@@ -314,7 +314,39 @@ function createLink(s, t) {
     view.hideTools();
 }
 
+//fetch template
 
+// Sample JSON payload
+const payload = {
+    adj_List: 'adjacencyList',
+    node_coords: 'coordinates'
+  };
+  
+  // Backend URL
+  const backendURL = 'https://localhost/api/dijkstra';
+  
+  // Creating a new XMLHttpRequest object
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', backendURL, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  
+  // Handling the response from the server
+  xhr.onload = function() {
+    if(xhr.status >= 200 && xhr.status < 300) {
+      const response = JSON.parse(xhr.responseText);
+      console.log('Response from server:', response);
+    } else {
+      console.error('Request failed with status:', xhr.status);
+    }
+  };
+  
+  // Handling errors during the request
+  xhr.onerror = function() {
+    console.error('Request failed');
+  };
+  
+  // Sending the request with the JSON payload
+  xhr.send(JSON.stringify(payload));
 
 // function setStartView(elementView) {
 //     hidePath();
