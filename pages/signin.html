@@ -2,16 +2,51 @@
 layout: default
 title: SignIn
 ---
-<head>
-    <link rel="stylesheet" href="/assets/css/signup.css">
-    <title>DADDiJkstra - Sign Up</title>
-</head>
+---
+layout: default
+title: SignIn
+---
+<!-- <body class="bg-black">
+    <section class="flex justify-center items-center min-h-screen">
+        <div class="relative w-96 h-96 bg-opacity-50 bg-white border-2 border-opacity-50 rounded-3xl backdrop-blur-2xl flex justify-center items-center">
+            <div class="text-center">
+                <h2 class="text-white text-2xl">Sign Up</h2>
+                <form action="">
+                    <div class="mb-6 relative w-72">
+                        <ion-icon name="mail-outline" class="absolute right-4 text-white text-xl top-4"></ion-icon>
+                        <input type="email" required class="w-full border-b-2 border-white bg-transparent outline-none text-white text-xl pl-8" />
+                        <label for="" class="absolute left-2 top-1/2 transform -translate-y-1/2 text-white text-base pointer-events-none transition-transform duration-500">Username</label>
+                    </div>
+                    <div class="mb-6 relative w-72">
+                        <ion-icon name="lock-closed-outline" class="absolute right-4 text-white text-xl top-4"></ion-icon>
+                        <input type="password" required class="w-full border-b-2 border-white bg-transparent outline-none text-white text-xl pl-8" />
+                        <label for="" class="absolute left-2 top-1/2 transform -translate-y-1/2 text-white text-base pointer-events-none transition-transform duration-500">Password</label>
+                    </div>
+                    <button class="w-full h-10 rounded-full bg-white border-none outline-none text-xl font-semibold cursor-pointer">Sign Up</button>
+                    <button onclick="goBack()" class="w-full h-10 rounded-full bg-white border-none outline-none text-xl font-semibold cursor-pointer">Go Back</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script>
+        function goBack() {
+            window.location.href = "";
+        }
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body> -->
+
 <body>
     <section>
         <div class="signin-box">
             <div class="signin-value">
                 <form action="">
                     <h2>Sign Up</h2>
+                    <div class="inputbox">
+                        <input type="name" required>
+                        <label for="">First and Last Name</label>
+                    </div>
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
                         <input type="email" required>
