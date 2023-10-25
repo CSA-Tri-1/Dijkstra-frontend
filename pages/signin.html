@@ -30,9 +30,15 @@ title: SignIn
     </section>
 
     <script>
-        const login_url = ""; // Specify your login URL here
-        const read_url = ""; // Specify your read URL here
-        const post_url = ""; // Specify your post URL here
+        const login_url = "http://localhost:8085/authenticate";
+        // prepare URL
+        //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
+        // Uncomment next line for localhost testing
+        const read_url = "http://localhost:8085/api/usr/";
+        //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
+        // Uncomment next line for localhost testing
+        const post_url = "http://localhost:8085/api/usr/post";
+        const put_url = "http://localhost:8085/api/usr/update";
         let currentField = "emailField";
 
         function showNextField() {
