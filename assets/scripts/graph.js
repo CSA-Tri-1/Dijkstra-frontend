@@ -295,6 +295,8 @@ function createLink(s, t) {
 
         adj_List[sId - 1][tId - 1] = distance;
         adj_List[tId - 1][sId - 1] = distance;
+
+        
     }
 
     link.addTo(graph);
