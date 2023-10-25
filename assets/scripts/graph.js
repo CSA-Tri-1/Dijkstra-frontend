@@ -139,8 +139,8 @@ class EditController extends Controller {
             'element:mouseenter': showElementTools,
             'element:mouseleave': hideElementTools,
             'element:pointerdblclick': removeElement,
-            'blank:pointerdblclick': addElement,
-            'element:pointerdown': changeWeight
+            'blank:pointerdblclick': addElement
+            // 'element:pointerdown': changeWeight
         });
     }
 }
@@ -190,9 +190,14 @@ function addElement({ createNode, size }, _evt, x, y) {
     node.position(x - size / 2, y - size / 2);
     nodes_array.push(node);
 }
-function changeWeight() {
 
-}
+graph.on('change:position', function(cell) {
+    if (cell.isElement()) {
+        const nodeId = cell.id;
+        const center = cell.getBBox().center();
+        node_coords[nodeId] = center;
+    }
+});
 
 // const viewController = new ViewController({ paper });
 const editController = new EditController({ graph, paper, createLink, createNode, getStartView, size });
@@ -242,7 +247,6 @@ function createNode(id) {
 
 // creating links between nodes on map
 function createLink(s, t) {
-    // console.log("S: " + s)
     let x1 = getNodefromId(s).attributes.position.x
     let x2 = getNodefromId(t).attributes.position.x
     let y1 = getNodefromId(s).attributes.position.y
@@ -278,9 +282,19 @@ function createLink(s, t) {
     });
 
     if (link.attributes.target.hasOwnProperty("id")) {
-        edge_array.push([link.attributes.distance, [link.attributes.source, link.attributes.target]]);
-        
-        adj_List.push([link.attributes.source, [link.attributes.distance]], [link.attributes.target, [link.attributes.distance]])
+
+        // create symmetric matrix for edge weights
+        const sId = link.attributes.source.id;
+        const tId = link.attributes.target.id;
+        const distance = link.attributes.distance;
+        const maxId = Math.max(sId, tId);
+
+        while (adj_List.length < maxId) {
+            adj_List.push(Array(maxId).fill(0));
+        }
+
+        adj_List[sId - 1][tId - 1] = distance;
+        adj_List[tId - 1][sId - 1] = distance;
     }
 
     link.addTo(graph);
@@ -294,10 +308,11 @@ function createLink(s, t) {
             new joint.linkTools.Remove({ distance: '10%' })
         ]
     }));
-    edge_array.push();
 
     view.hideTools();
 }
+
+
 
 // function setStartView(elementView) {
 //     hidePath();
