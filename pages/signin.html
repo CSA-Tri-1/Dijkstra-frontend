@@ -17,7 +17,7 @@ title: SignIn
                         <input type="password" id="passwordInput" name="password" required>
                         <label for="passwordInput">Password</label>
                     </div>
-                    <button onclick="showNextField()">Log In</button>
+                    <button type="button" onclick="showNextField()">Log In</button>
                     <div class="register">
                         <p>Don't have an account? <a href="{{ site.baseurl }}/pages/signup">Sign Up</a></p>
                     </div>
@@ -50,11 +50,14 @@ title: SignIn
                 passwordField.style.display = "block";
                 document.querySelector("button").textContent = "Log In";
             } else if (currentField === "passwordField") {
-                login_user(); // Handle form submission
+        
+        const signupForm = document.getElementById("signupForm");
+        signupForm.addEventListener("submit", function (e) {
             }
         }
 
-        function login_user() {
+        function login_user(event) {
+            event.preventDefault();
             // Set body to include login data
             const emailInput = document.getElementById("emailInput");
             const passwordInput = document.getElementById("passwordInput");
