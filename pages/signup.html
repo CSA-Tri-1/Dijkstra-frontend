@@ -42,15 +42,16 @@ title: SignUp
         // Uncomment next line for localhost testing
         const post_url = "http://localhost:8085/api/usr/post";
         const put_url = "http://localhost:8085/api/usr/update";
-        function create_user() {
+        function create_user(event) {
+            event.preventDefault();
             const createBody = {
             email: document.getElementById("emailInput").value,
             password: document.getElementById("passwordInput").value,
             name: document.getElementById("nameInput").value
         };
         // url encoding
-        const email = encodeURIComponent(document.getElementById("emailField").value);
-        const password = encodeURIComponent(document.getElementById("passwordField").value);
+        const email = encodeURIComponent(document.getElementById("emailInput").value);
+        const password = encodeURIComponent(document.getElementById("passwordInput").value);
         const name = encodeURIComponent(document.getElementById("nameInput").value);
 
         if (currentField === "nameInput" && nameInput.value.trim() === "") {
@@ -63,7 +64,7 @@ title: SignUp
                 alert("Please enter your password");
                 return;
             }
-        if (currentField === "passwordInput") {
+        if (currentField === "passwordField") {
         // updated post url
         const updatedPostUrl = post_url + `?email=${email}&password=${password}&name=${name}`;
         // set options for cross origin header request
@@ -114,10 +115,8 @@ title: SignUp
 
         const signupForm = document.getElementById("signupForm");
         signupForm.addEventListener("submit", function (e) {
-            if (currentField !== "passwordField") {
-                e.preventDefault(); // Prevent the default form submission until the password field is reached.
-            }
-        });
+        create_user(e); // Pass the event object to the create_user function
+});
 
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
