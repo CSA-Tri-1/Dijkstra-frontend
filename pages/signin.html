@@ -5,7 +5,7 @@ title: SignIn
     <section>
         <div class="signin-box">
             <div class="signin-value">
-                <form id="signinForm">
+                <form id="signinForm" autocomplete="off">
                     <h2>Sign In</h2>
                     <div class="inputbox" id="emailField" style="display: block;">
                         <ion-icon name="mail-outline"></ion-icon>
@@ -17,7 +17,7 @@ title: SignIn
                         <input type="password" id="passwordInput" name="password" required>
                         <label for="passwordInput">Password</label>
                     </div>
-                    <button type="button" onclick="showNextField()">Log In</button>
+                    <button onclick="showNextField()">Log In</button>
                     <div class="register">
                         <p>Don't have an account? <a href="{{ site.baseurl }}/pages/signup">Sign Up</a></p>
                     </div>
@@ -30,15 +30,15 @@ title: SignIn
     </section>
 
     <script>
-        const login_url = "http://localhost:8085/authenticate";
+        const login_url = "http://localhost:8084/authenticate";
         // prepare URL
         //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
         // Uncomment next line for localhost testing
-        const read_url = "http://localhost:8085/api/usr/";
+        const read_url = "http://localhost:8084/api/usr/";
         //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
         // Uncomment next line for localhost testing
-        const post_url = "http://localhost:8085/api/usr/post";
-        const put_url = "http://localhost:8085/api/usr/update";
+        const post_url = "http://localhost:8084/api/usr/post";
+        const put_url = "http://localhost:8084/api/usr/update";
         let currentField = "emailField";
 
         function showNextField() {
@@ -50,11 +50,16 @@ title: SignIn
                 passwordField.style.display = "block";
                 document.querySelector("button").textContent = "Log In";
             } else if (currentField === "passwordField") {
-        
-        const signupForm = document.getElementById("signupForm");
-        signupForm.addEventListener("submit", function (e) {
+                login_user();
             }
+
+        
+        const signinForm = document.getElementById("signinForm");
+        signinForm.addEventListener("submit", function (e) {
+        login_user(e);
+            })
         }
+
 
         function login_user(event) {
             event.preventDefault();

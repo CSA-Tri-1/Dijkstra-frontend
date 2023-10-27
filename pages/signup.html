@@ -5,7 +5,7 @@ title: SignUp
     <section>
         <div class="signin-box">
             <div class="signin-value">
-                <form action="" id="signupForm">
+                <form action="" id="signupForm" autocomplete="off">
                     <h2>Sign Up</h2>
                     <div class="inputbox">
                         <input type="text" id="nameInput" name = "name" required>
@@ -33,15 +33,15 @@ title: SignUp
     </section>
     <script>
         let currentField = "nameInput";
-        const login_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/authenticate";
+        const login_url = "http://localhost:8084/authenticate";
         // prepare URL
         //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
         // Uncomment next line for localhost testing
-        const read_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/api/usr/";
+        const read_url = "http://localhost:8084/api/usr/";
         //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
         // Uncomment next line for localhost testing
-        const post_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/api/usr/post";
-        const put_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/api/usr/update";
+        const post_url = "http://localhost:8084/api/usr/post";
+        const put_url = "http://localhost:8084/api/usr/update";
         function create_user(event) {
             event.preventDefault();
             const createBody = {
