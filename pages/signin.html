@@ -151,6 +151,8 @@ title: SignIn
                         window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
                         return;
                     }
+                })
+                .catch(error =>{
                     if (response.status === 401) {
                         alert("Bad password/username input");
                         console.log(errorMsg);
@@ -162,6 +164,7 @@ title: SignIn
                         console.log(errorMsg);
                         return;
                     }
+                });
                     // response.json().then(data => {
                     // // const jwtToken = data.jwt;
                     // // const email = emailInput.value;
@@ -171,8 +174,7 @@ title: SignIn
                     // alert("Signed In!")
                     // return;
                     // });
-                })
-                };
+                    }
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
