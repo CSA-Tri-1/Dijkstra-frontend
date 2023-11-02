@@ -30,17 +30,32 @@ title: SignIn
     </section>
 
     <script>
-        const login_url = "http://localhost:8084/authenticate";
+        const login_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/authenticate";
         // prepare URL
         //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
         // Uncomment next line for localhost testing
-        const read_url = "http://localhost:8084/api/usr/";
+        const read_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/api/usr/";
         //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
         // Uncomment next line for localhost testing
-        const post_url = "http://localhost:8084/api/usr/post";
-        const put_url = "http://localhost:8084/api/usr/update";
+        const post_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/api/usr/post";
+        const put_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/api/usr/update";
         let currentField = "emailField";
 
+        //
+        //set a cookie value
+        function setCookie(name, value, hours) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (hours * 60 * 60 * 1000));
+        document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+        }
+
+        // Function to get a cookie value
+        function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        //
         function showNextField() {
             const emailField = document.getElementById("emailField");
             const passwordField = document.getElementById("passwordField");
@@ -94,8 +109,8 @@ title: SignIn
                     "Content-Type": "application/json",
                 },
             };
-
-            // Fetch JWT
+        // new code begin
+            // Fetch JWT 
             fetch(login_url, authOptions)
                 .then(response => {
                     if (!response.ok) {
@@ -103,17 +118,17 @@ title: SignIn
                         console.log(errorMsg);
                         return;
                     }
-                    if (response.ok) {
-                        console.log('Successful fetch');
-                        return;
-                    }
+                    response.json().then(data => {
+                    const jwtToken = data.jwt; // Assuming you receive JWT in response
+                    setCookie("jwt", jwtToken, 1); // Expires in 1 hour
+                    });
                     // Success!!!
                     // Redirect to Database location
                     // window.location.href = "/APCSA/data/database";
                 });
             }
         }
-
+        // new code end
         function read_pull() {
             // Set options for cross-origin header request
             const options = {
