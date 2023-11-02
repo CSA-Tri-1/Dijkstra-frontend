@@ -88,8 +88,6 @@ title: SignIn
             if (currentField === "emailField" && emailInput.value.trim() === "") {
                 alert("Please enter your email");
                 return;
-                const email = emailInput.value;
-                setCookie("email", email, 1); // Expires in 1 hour
             } else if (currentField === "passwordField" && passwordInput.value.trim() === "") {
                 alert("Please enter your password");
                 return;
@@ -123,6 +121,8 @@ title: SignIn
                     if (response.ok) {
                         console.log('Successful fetch');
                         return;
+                        const email = emailInput.value;
+                        setCookie("email", email, 1); // Expires in 1 hour
                     }
                     // Success!!!
                     // Redirect to Database location
@@ -132,7 +132,11 @@ title: SignIn
         }
         // new code end
         function read_pull() {
-            // Set options for cross-origin header request
+            const authBody = {
+                email: emailInput.value,
+                password: passwordInput.value
+            };
+
             const options = {
                 method: 'GET',
                 mode: 'cors',
@@ -157,6 +161,8 @@ title: SignIn
                         return;
                     }
                     response.json().then(data => {
+                    const email = emailInput.value;
+                    setCookie("email", email, 1); // Expires in 1 hour
                     const jwtToken = data.jwt;
                     setCookie("jwt", jwtToken, 1); // Expires in 1 hour
                     console.log(response);
