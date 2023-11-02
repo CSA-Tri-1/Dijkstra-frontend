@@ -23,7 +23,7 @@ email: davidkvasilev@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Dijkstra implementation
 baseurl: "/DADDiJkstra-frontend" # the subpath of your site, e.g. /blog
-url: "https://DavidVasilev1.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://CSA-Tri-1.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll
 
