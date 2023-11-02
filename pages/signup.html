@@ -90,7 +90,8 @@ title: SignUp
                 return;
             }
             if (response.status === 201){
-                alert("Your account has been created!")
+                alert("Your account has been created!");
+                return;
             }
             // valid response will contain json data
             response.json().then(data => {
