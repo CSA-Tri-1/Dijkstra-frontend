@@ -305,13 +305,8 @@ function createLink(s, t) {
         const distance = link.attributes.distance;
         const maxId = Math.max(sId, tId);
 
-        for (let i = 0; i < maxId; i++) {
-            let array = [];
-            adj_List.push(arry);
-            for (let j = 0; j < maxId; j++) {
-                adj_List[0].push(10000);
-            }
-            
+        while (adj_List.length < maxId) {
+            adj_List.push(Array(maxId).fill(10000));
         }
 
         for (let i = 0; i < adj_List.length; i++) {
