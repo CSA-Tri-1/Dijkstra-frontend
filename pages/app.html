@@ -21,6 +21,30 @@ title: App
   #startNode {
     border-color: black;
   }
+  ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0 10px;
+    position: relative;
+  }
+  li:after {
+    content: '→';
+    position: absolute;
+    right: -15px;
+  }
+  li:last-child:after {
+    content: '';
+  }
+  input {
+    background-color: #ececec77;
+    border: solid;
+    border-radius: 10px;
+  }
 </style>
 <script>
   var nodes_array = [];
@@ -59,6 +83,18 @@ title: App
       if(xhr.status >= 200 && xhr.status < 300) {
         const response = JSON.parse(xhr.responseText);
         console.log('Response from server:', response);
+        const responseContainer = document.getElementById('responseContainer');
+        responseContainer.innerHTML = '';
+
+        const ul = document.createElement('ul');
+            ul.classList.add('arrows-list');
+            response.forEach((item) => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                ul.appendChild(li);
+            });
+
+            responseContainer.appendChild(ul);
       } else {
         console.error('Request failed with status:', xhr.status);
       }
@@ -79,13 +115,17 @@ title: App
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.5/joint.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jointjs/dist/joint.min.css">
 <script type="module" src="{{ site.baseurl }}/assets/scripts/graph.js"></script>
-<!-- <script src="{{ site.baseurl }}/assets/scripts/controller.js"></script>
-<script src="{{ site.baseurl }}/assets/scripts/controllers/edit-controller.js"></script>
-<script src="{{ site.baseurl }}/assets/scripts/controllers/view-controller.js"></script> -->
-<p>testing canvas</p>
+<div>
+  <span id="zoom-out" class="btn">Zoom Out</span>
+  <span id="zoom-in" class="btn">Zoom In</span>
+</div>
+<button class="btn" id="edit" onclick="setMode(editMode)">Edit Mode</button>
 <div id="interactive-graph"></div>
 <div>
+  <p>Start: </p>
   <input type="integer" id="startNode" name="startNode">
+  <p>End: </p>
   <input type="integer" id="endNode" name="endNode">
-  <button onclick="submit()">Submit</button>
 </div>
+<button onclick="submit()" class="btn btn-ghost">Submit</button>
+<div id="responseContainer"></div>
