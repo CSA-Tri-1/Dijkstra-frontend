@@ -21,6 +21,11 @@ h1 {
   text-align: center;
   padding: 1rem;
   position: relative;
+  background-color: lightblue
+  /* 
+  background-image: url(''); for background image
+  background-size: cover; 
+  background-position: center;  */
 }
 
 .top-section .left,
@@ -91,7 +96,13 @@ h1 {
 }
 
 .first-main-section {
-  padding-top: 10vh;
+  padding-top: 0vh;
+ font-size: 40px;
+  font-family: 'SFPro-Round-Black';
+  src: url('../fonts/SF-Pro-Rounded-Black.otf') format('opentype');
+  color: #141616;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .imgs > * {
