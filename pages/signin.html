@@ -105,7 +105,6 @@ title: SignIn
                     }
                     if (response.ok) {
                         console.log('Successful fetch');
-                        alert("Your signed in successfully!");
                         return;
                     }
                     // Success!!!
@@ -130,6 +129,10 @@ title: SignIn
             // Fetch the API
             fetch(read_url, options)
                 .then(response => {
+                    if (response.ok) {
+                        console.log(response);
+                        return;
+                    }
                     if (response.status !== 200) {
                         const errorMsg = 'Database response error: ' + response.status;
                         console.log(errorMsg);
