@@ -146,6 +146,7 @@ title: SignIn
                 .then(response => {
                     if (response.ok) {
                         console.log(response);
+                        alert("Signed In!")
                         return;
                     }
                     if (response.status !== 200) {
