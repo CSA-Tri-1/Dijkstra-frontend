@@ -62,6 +62,7 @@ title: SignIn
 
 
         function login_user(event) {
+            if (event) {
             event.preventDefault();
             // Set body to include login data
             const emailInput = document.getElementById("emailInput");
@@ -100,10 +101,16 @@ title: SignIn
                         console.log(errorMsg);
                         return;
                     }
+                    if (response.ok) {
+                        console.log('Successful fetch');
+                        alert("Your signed in successfully!");
+                        return;
+                    }
                     // Success!!!
                     // Redirect to Database location
                     // window.location.href = "/APCSA/data/database";
                 });
+            }
         }
 
         function read_pull() {
