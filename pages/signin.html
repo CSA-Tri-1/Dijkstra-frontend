@@ -41,21 +41,24 @@ title: SignIn
         const put_url = "http://localhost:8084/api/usr/update";
         let currentField = "emailField";
 
-        //
-        //set a cookie email
-        function setCookie(name, email, hours) {
-        const expires = new Date();
-        expires.setTime(expires.getTime() + (hours * 60 * 60 * 1000));
-        document.cookie = `${name}=${email};expires=${expires.toUTCString()};path=/`;
-        }
+        // //
+        // //set a cookie email
+        // function setCookie(name, email, hours) {
+        // const expires = new Date();
+        // expires.setTime(expires.getTime() + (hours * 60 * 60 * 1000));
+        // document.cookie = `${name}=${email};expires=${expires.toUTCString()};path=/`;
+        // }
 
-        // Function to get a cookie email
-        function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-        //
+        // // const email = emailInput.value;
+        // // setCookie("email", email, 1); // Expires in 1 hour
+
+        // // Function to get a cookie email
+        // function getCookie(name) {
+        // const value = `; ${document.cookie}`;
+        // const parts = value.split(`; ${name}=`);
+        // if (parts.length === 2) return parts.pop().split(';').shift();
+        // }
+        // //
         function showNextField() {
             const emailField = document.getElementById("emailField");
             const passwordField = document.getElementById("passwordField");
@@ -121,8 +124,6 @@ title: SignIn
                     if (response.ok) {
                         console.log('Successful fetch');
                         return;
-                        const email = emailInput.value;
-                        setCookie("email", email, 1); // Expires in 1 hour
                     }
                     // Success!!!
                     // Redirect to Database location
@@ -132,11 +133,7 @@ title: SignIn
         }
         // new code end
         function read_pull() {
-            const authBody = {
-                email: emailInput.value,
-                password: passwordInput.value
-            };
-
+            // Set options for cross-origin header request
             const options = {
                 method: 'GET',
                 mode: 'cors',
@@ -160,15 +157,15 @@ title: SignIn
                         console.log(errorMsg);
                         return;
                     }
-                    response.json().then(data => {
-                    const email = emailInput.value;
-                    setCookie("email", email, 1); // Expires in 1 hour
-                    const jwtToken = data.jwt;
-                    setCookie("jwt", jwtToken, 1); // Expires in 1 hour
-                    console.log(response);
-                    alert("Signed In!")
-                    return;
-                    });
+                    // response.json().then(data => {
+                    // // const jwtToken = data.jwt;
+                    // // const email = emailInput.value;
+                    // // setCookie("email", email, 1); // Expires in 1 hour
+                    // // setCookie("jwt", jwtToken, 1); // Expires in 1 hour
+                    // console.log(response);
+                    // alert("Signed In!")
+                    // return;
+                    // });
                 })
                 };
     </script>
