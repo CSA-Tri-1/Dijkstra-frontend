@@ -1,13 +1,12 @@
 let startView;
 let endView;
-let directed = false;
 let pathMembersViews = [];
 const pathMemberHighlightId = 'path-member';
 const invalidPathHighlightId = 'invalid-path-member';
 const pathMemberClassName = 'path-member';
 const invalidPathClassName = 'invalid-path';
 const highlightId = 'start-highlight';
-const blueColor = '#4666E5';
+const blueColor = '#54ccff';
 const blackColor = '#222222';
 const invalidColor = '#FF4365';
 const outlineColor = '#616161';
@@ -19,13 +18,13 @@ const startAttrs = {
     }
 };
 let nextId = 0;
-let editMode = true; // temp true
+let editMode = true;
 const size = 40;
 const getTargetMarkerStyle = () => ({ type: 'path', d: null , fill: blackColor, stroke: blackColor });
 const getLinkStyle = () => {
     return V.createSVGStyle(`
     .joint-link .${pathMemberClassName} {
-        animation: stroke 0.6s ease-in-out infinite alternate;
+        animation: stroke 1s ease-in-out infinite alternate;
     }
 `);
 }
@@ -82,7 +81,7 @@ class Controller extends joint.mvc.Listener {
     }
   }
 
-class ViewController extends Controller {
+  class ViewController extends Controller {
     startListening() {
         const { paper } = this.context;
 
@@ -101,6 +100,7 @@ function selectSource({ setStartView }, elementView) {
 function selectEnd({ showPath, setEndView, getStartView, getEndView }, elementView) {
     const pathStartView = getStartView();
     const pathEndView = getEndView();
+
     if (elementView === pathStartView) return;
     if (pathStartView && pathEndView) {
         joint.highlighters.addClass.remove(pathStartView, invalidPathHighlightId);
@@ -326,16 +326,76 @@ function setStartView(elementView) {
         joint.highlighters.mask.add(elementView, 'body', highlightId, startAttrs);
     }
     startView = elementView;
+    start.length = 0
+    start.push(elementView.model.id)
 }
 
 function setEndView(elementView) {
-    endView = elementView;
+    endView = elementView
+    end.length = 0
+    end.push(elementView.model.id)
 }
 
 function getElementPath() {
-    console.log(window.response)
-    
-    return window.response;
+    console.log('Current start and end values:', start, end);
+    console.log('Current adj_List:', adj_List);
+
+    adj_List = Array(current_index).fill().map(() => Array(current_index).fill(10000));
+    for (let i = 0; i < adj_array.length; i++) {
+      adj_List[adj_array[i][0]][adj_array[i][1]] = adj_array[i][2];
+      adj_List[adj_array[i][1]][adj_array[i][0]] = adj_array[i][2];
+    }
+    for (let i = 0; i < current_index; i ++){
+      adj_List[i][i] = 0;
+    }
+
+    const payload = {
+        adjacencyList: adj_List,
+        source: parseInt(start),
+        target: parseInt(end)
+    };
+
+    // Backend URL
+    const backendURL = 'http://localhost:8084/api/dijkstra/';
+
+    // Creating a new XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', backendURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    // Handling the response from the server
+    return new Promise((resolve, reject) => {
+        xhr.onload = function() {
+        
+            if(xhr.status >= 200 && xhr.status < 300) {
+                const response = JSON.parse(xhr.responseText);
+                console.log('Response from server:', response);
+                const responseContainer = document.getElementById('responseContainer');
+                responseContainer.innerHTML = '';
+        
+                const ul = document.createElement('ul');
+                    ul.classList.add('arrows-list');
+                    response.forEach((item) => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        ul.appendChild(li);
+                    });
+        
+                responseContainer.appendChild(ul);
+                resolve(response)
+            } else {
+                console.error('Request failed with status:', xhr.status);
+            }
+            };
+        
+            // Handling errors during the request
+            xhr.onerror = function() {
+            console.error('Request failed');
+            };
+        
+            // Sending the request with the JSON payload
+            xhr.send(JSON.stringify(payload));
+    });
 }
 
 function getLinkPath(elementPath) {
@@ -362,40 +422,43 @@ function getLinkPath(elementPath) {
     return linkPath;
 }
 
-function showPath() {
-    const elementPath = getElementPath();
-    const isPathFound = elementPath.length > 0;
-
-    if (!isPathFound && startView && endView && startView.id !== endView.id && !editMode) {
-        joint.highlighters.addClass.add(startView, 'body', invalidPathHighlightId, {
-            className: invalidPathClassName
-        });
-        joint.highlighters.addClass.add(endView, 'body', invalidPathHighlightId, {
-            className: invalidPathClassName
-        });
-        hidePath();
-        return;
-    }
-
-    if (startView) joint.highlighters.addClass.remove(startView, invalidPathHighlightId);
-    if (endView) joint.highlighters.addClass.remove(endView, invalidPathHighlightId);
-    hidePath();
-    const linkPath = getLinkPath(elementPath);
-
-    for (const elementId of [...elementPath, ...linkPath]) {
-        const element = graph.getCell(elementId);
-        const view = element.findView(paper);
-        const isLink = view.model.isLink();
-        joint.highlighters.addClass.add(view, isLink ? 'line' : 'body', pathMemberHighlightId, {
-            className: pathMemberClassName
-        });
-
-        if (isLink) {
-            element.set('z', 2);
+async function showPath() {
+   
+        const elementPath = await getElementPath();
+        console.log(elementPath);
+        const isPathFound = elementPath.length > 0;
+        console.log(isPathFound)
+        if (!isPathFound && startView && endView && startView.id !== endView.id && !editMode) {
+            joint.highlighters.addClass.add(startView, 'body', invalidPathHighlightId, {
+                className: invalidPathClassName
+            });
+            joint.highlighters.addClass.add(endView, 'body', invalidPathHighlightId, {
+                className: invalidPathClassName
+            });
+            hidePath();
+            return;
         }
-
-        pathMembersViews.push(view);
-    }
+    
+        if (startView) joint.highlighters.addClass.remove(startView, invalidPathHighlightId);
+        if (endView) joint.highlighters.addClass.remove(endView, invalidPathHighlightId);
+        hidePath();
+        const linkPath = getLinkPath(elementPath);
+    
+        for (const elementId of [...elementPath, ...linkPath]) {
+            const element = graph.getCell(elementId);
+            const view = element.findView(paper);
+            const isLink = view.model.isLink();
+            joint.highlighters.addClass.add(view, isLink ? 'line' : 'body', pathMemberHighlightId, {
+                className: pathMemberClassName
+            });
+    
+            if (isLink) {
+                element.set('z', 2);
+            }
+    
+            pathMembersViews.push(view);
+        }
+   
 
     // document.getElementById('path').innerText = elementPath.join(' → ');
 }
@@ -412,7 +475,6 @@ function hidePath() {
     }
 
     pathMembersViews = [];
-    // document.getElementById('path').innerText = '';
 }
 
 function toggleLinkStyle() {
@@ -492,18 +554,7 @@ function toggleView() {
     }
 }
 
-// document.getElementById('directed-graph-toggle').addEventListener('change', (evt) => {
-//     directed = evt.target.checked;
-//     hidePath();
-//     if (!editMode) showPath();
-//     graph.getLinks().forEach((link) => {
-//         link.attr('line/targetMarker', getTargetMarkerStyle());
-//     });
-//     toggleLinkStyle();
-// });
-
 document.getElementById('edit-mode-toggle').addEventListener('click', function(evt) {
     editMode = evt.target.checked
     toggleView();
-    console.log("hello")
 });

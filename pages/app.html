@@ -57,67 +57,19 @@ title: App
   var current_index = 0;
 
   function submit() {
-    const startNode = document.getElementById('startNode').value
-    const endNode = document.getElementById('endNode').value
-
-    start.push(startNode)
-    end.push(endNode)
-
-    adj_List = Array(current_index).fill().map(() => Array(current_index).fill(10000));
-    for (let i = 0; i < adj_array.length; i++) {
-      adj_List[adj_array[i][0]][adj_array[i][1]] = adj_array[i][2];
-      adj_List[adj_array[i][1]][adj_array[i][0]] = adj_array[i][2];
-    }
-    for (let i = 0; i < current_index; i ++){
-      adj_List[i][i] = 0;
-    }
+    // adj_List = Array(current_index).fill().map(() => Array(current_index).fill(10000));
+    // for (let i = 0; i < adj_array.length; i++) {
+    //   adj_List[adj_array[i][0]][adj_array[i][1]] = adj_array[i][2];
+    //   adj_List[adj_array[i][1]][adj_array[i][0]] = adj_array[i][2];
+    // }
+    // for (let i = 0; i < current_index; i ++){
+    //   adj_List[i][i] = 0;
+    // }
 
     //fetch template
 
     // Sample JSON payload
-    const payload = {
-      adjacencyList: adj_List,
-      source: parseInt(start),
-      target: parseInt(end)
-    };
-
-    // Backend URL
-    const backendURL = 'http://localhost:8084/api/dijkstra/';
-
-    // Creating a new XMLHttpRequest object
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', backendURL, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    // Handling the response from the server
-    xhr.onload = function() {
-      if(xhr.status >= 200 && xhr.status < 300) {
-        window.response = JSON.parse(xhr.responseText);
-        console.log('Response from server:', window.response);
-        const responseContainer = document.getElementById('responseContainer');
-        responseContainer.innerHTML = '';
-
-        const ul = document.createElement('ul');
-            ul.classList.add('arrows-list');
-            response.forEach((item) => {
-                const li = document.createElement('li');
-                li.textContent = item;
-                ul.appendChild(li);
-            });
-
-            responseContainer.appendChild(ul);
-      } else {
-        console.error('Request failed with status:', xhr.status);
-      }
-    };
-
-    // Handling errors during the request
-    xhr.onerror = function() {
-      console.error('Request failed');
-    };
-
-    // Sending the request with the JSON payload
-    xhr.send(JSON.stringify(payload));
+    
   }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.js"></script>
