@@ -309,6 +309,10 @@ function createLink(s, t) {
             adj_List.push(Array(maxId).fill(10000));
         }
 
+        for (let i = 0; i < adj_List.length; i++) {
+            adj_List[i][i] = 0;
+        }
+
         adj_List[sId - 1][tId - 1] = distance;
         adj_List[tId - 1][sId - 1] = distance;
 
