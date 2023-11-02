@@ -1,41 +1,143 @@
 ---
-layout: default
 title: SignIn
 ---
-<head>
-    <link rel="stylesheet" href="/assets/css/signup.css">
-    <title>DADDiJkstra - Sign Up</title>
-</head>
 <body>
     <section>
         <div class="signin-box">
             <div class="signin-value">
-                <form action="">
-                    <h2>Sign Up</h2>
-                    <div class="inputbox">
+                <form id="signinForm" autocomplete="off">
+                    <h2>Sign In</h2>
+                    <div class="inputbox" id="emailField" style="display: block;">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="email" required>
-                        <label for="">Username</label>
+                        <input type="email" id="emailInput" name="email" required>
+                        <label for="emailInput">Email</label>
                     </div>
-                    <div class="inputbox">
+                    <div class="inputbox" id="passwordField" style="display: none;">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" required>
-                        <label for="">Password</label>
+                        <input type="password" id="passwordInput" name="password" required>
+                        <label for="passwordInput">Password</label>
                     </div>
-                    <button>Sign Up</button>
-                    <button onclick="goBack()">Go Back</button>
+                    <button onclick="showNextField()">Log In</button>
+                    <div class="register">
+                        <p>Don't have an account? <a href="{{ site.baseurl }}/pages/signup">Sign Up</a></p>
+                    </div>
+                    <div class="goback">
+                        <p>Want to go back to the homepage? <a href="{{ site.baseurl }}/">Home</a></p>
+                    </div>
                 </form>
             </div>
         </div>
     </section>
+
     <script>
-        function goBack() {
-            window.location.href = "";
+        const login_url = "http://localhost:8084/authenticate";
+        // prepare URL
+        //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
+        // Uncomment next line for localhost testing
+        const read_url = "http://localhost:8084/api/usr/";
+        //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
+        // Uncomment next line for localhost testing
+        const post_url = "http://localhost:8084/api/usr/post";
+        const put_url = "http://localhost:8084/api/usr/update";
+        let currentField = "emailField";
+
+        function showNextField() {
+            const emailField = document.getElementById("emailField");
+            const passwordField = document.getElementById("passwordField");
+
+            if (currentField === "emailField") {
+                currentField = "passwordField"
+                passwordField.style.display = "block";
+                document.querySelector("button").textContent = "Log In";
+            } else if (currentField === "passwordField") {
+                login_user();
+            }
+
+        
+        const signinForm = document.getElementById("signinForm");
+        signinForm.addEventListener("submit", function (e) {
+        login_user(e);
+            })
+        }
+
+
+        function login_user(event) {
+            event.preventDefault();
+            // Set body to include login data
+            const emailInput = document.getElementById("emailInput");
+            const passwordInput = document.getElementById("passwordInput");
+
+            if (currentField === "emailField" && emailInput.value.trim() === "") {
+                alert("Please enter your email");
+                return;
+            } else if (currentField === "passwordField" && passwordInput.value.trim() === "") {
+                alert("Please enter your password");
+                return;
+            }
+
+            // Set Headers to support cross-origin
+            const authBody = {
+                email: emailInput.value,
+                password: passwordInput.value
+            };
+
+            const authOptions = {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'include',
+                body: JSON.stringify(authBody),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+
+            // Fetch JWT
+            fetch(login_url, authOptions)
+                .then(response => {
+                    if (!response.ok) {
+                        const errorMsg = 'Login error: ' + response.status;
+                        console.log(errorMsg);
+                        return;
+                    }
+                    // Success!!!
+                    // Redirect to Database location
+                    // window.location.href = "/APCSA/data/database";
+                });
+        }
+
+        function read_pull() {
+            // Set options for cross-origin header request
+            const options = {
+                method: 'GET',
+                mode: 'cors',
+                cache: 'default',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+
+            // Fetch the API
+            fetch(read_url, options)
+                .then(response => {
+                    if (response.status !== 200) {
+                        const errorMsg = 'Database response error: ' + response.status;
+                        console.log(errorMsg);
+                        return;
+                    }
+                    // Valid response will contain JSON data
+                    response.json().then(data => {
+                        console.log(data);
+                    });
+                });
         }
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
+
+<!-- Styles -->
 
 <style>
 *{
@@ -145,6 +247,23 @@ button{
 }
 
 .register p a:hover{
+    text-decoration: underline;
+}
+
+.goback{
+    font-size: 0.9em;
+    color: white;
+    text-align: center;
+    margin: 25px 0 ;
+}
+
+.goback p a{
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+}
+
+.goback p a:hover{
     text-decoration: underline;
 }
 </style>
