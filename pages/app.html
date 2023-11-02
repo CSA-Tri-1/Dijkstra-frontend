@@ -50,9 +50,11 @@ title: App
   var nodes_array = [];
   var node_coords = [];
   var edge_array = [];
+  var adj_array = [];
   var adj_List = [];
   var start = [];
   var end = [];
+  var current_index = 0;
 
   function submit() {
     const startNode = document.getElementById('startNode').value
@@ -60,6 +62,15 @@ title: App
 
     start.push(startNode)
     end.push(endNode)
+
+    adj_List = Array(current_index).fill().map(() => Array(current_index).fill(10000));
+    for (let i = 0; i < adj_array.length; i++) {
+      adj_List[adj_array[i][0]][adj_array[i][1]] = adj_array[i][2];
+      adj_List[adj_array[i][1]][adj_array[i][0]] = adj_array[i][2];
+    }
+    for (let i = 0; i < current_index; i ++){
+      adj_List[i][i] = 0;
+    }
 
     //fetch template
 

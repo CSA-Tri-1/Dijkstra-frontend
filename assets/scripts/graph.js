@@ -87,7 +87,6 @@ const paper = new joint.dia.Paper({
     }
 });
 var namespace = joint.shapes;
-var current_index = 0;
 
 class Controller extends joint.mvc.Listener {
     get context() {
@@ -215,7 +214,9 @@ const viewController = new ViewController({ paper, selectSource, getStartView, g
 const editController = new EditController({ graph, paper, createLink, createNode, getStartView, getEndView, size });
 
 editController.startListening();
-
+function getCurrentID() {
+    return current_index;
+}
 function getNodeId() {
     current_index++;
     return current_index;
@@ -299,20 +300,12 @@ function createLink(s, t) {
 
     if (link.attributes.target.hasOwnProperty("id")) {
 
-        // create symmetric matrix for edge weights
+        // push edge weights for adj_array
         const sId = link.attributes.source.id;
         const tId = link.attributes.target.id;
         const distance = link.attributes.distance;
-        const maxId = Math.max(sId, tId);
 
-        while (adj_List.length < maxId) {
-            adj_List.push(Array(maxId).fill(10000));
-        }
-
-        adj_List[sId - 1][tId - 1] = distance;
-        adj_List[tId - 1][sId - 1] = distance;
-
-        
+        adj_array.push([sId - 1, tId - 1, distance])
     }
 
     link.addTo(graph);
