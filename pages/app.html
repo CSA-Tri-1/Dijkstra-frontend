@@ -18,7 +18,61 @@ title: App
     height: 500px;
     overflow: hidden;
   }
+  #startNode {
+    border-color: black;
+  }
 </style>
+<script>
+  var nodes_array = [];
+  var node_coords = [];
+  var edge_array = [];
+  var adj_List = [];
+  var start = [];
+  var end = [];
+
+  function submit() {
+    const startNode = document.getElementById('startNode').value
+    const endNode = document.getElementById('endNode').value
+
+    start.push(startNode)
+    end.push(endNode)
+
+    //fetch template
+
+    // Sample JSON payload
+    const payload = {
+      adjacencyList: adj_List,
+      source: parseInt(start),
+      target: parseInt(end)
+    };
+
+    // Backend URL
+    const backendURL = 'https://daddjbackend.stu.nighthawkcodingsociety.com/api/dijkstra/';
+
+    // Creating a new XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', backendURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    // Handling the response from the server
+    xhr.onload = function() {
+      if(xhr.status >= 200 && xhr.status < 300) {
+        const response = JSON.parse(xhr.responseText);
+        console.log('Response from server:', response);
+      } else {
+        console.error('Request failed with status:', xhr.status);
+      }
+    };
+
+    // Handling errors during the request
+    xhr.onerror = function() {
+      console.error('Request failed');
+    };
+
+    // Sending the request with the JSON payload
+    xhr.send(JSON.stringify(payload));
+  }
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.1/backbone.js"></script>
@@ -30,3 +84,8 @@ title: App
 <script src="{{ site.baseurl }}/assets/scripts/controllers/view-controller.js"></script> -->
 <p>testing canvas</p>
 <div id="interactive-graph"></div>
+<div>
+  <input type="integer" id="startNode" name="startNode">
+  <input type="integer" id="endNode" name="endNode">
+  <button onclick="submit()">Submit</button>
+</div>
