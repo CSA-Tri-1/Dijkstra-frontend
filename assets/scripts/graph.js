@@ -307,6 +307,10 @@ function createLink(s, t) {
 
         let array = Array(maxId).fill().map(() => Array(maxId).fill(10000));
 
+        // while (adj_List.length < maxId) {
+        //     adj_List.push(Array(maxId).fill(10000));
+        // }
+
         for (let i = 0; i < adj_List.length; i++) {
             adj_List[i][i] = 0;
         }
