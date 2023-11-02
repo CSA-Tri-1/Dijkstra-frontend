@@ -84,13 +84,14 @@ title: SignUp
             // response is a RESTful "promise" on any successful fetch
             .then(response => {
             // check for response errors and display
+            if (response.status === 201){
+                console.log('Account created!');
+                alert("Your account has been created!");
+                return;
+            }
             if (response.status !== 200) {
                 const errorMsg = 'Database response error: ' + response.status;
                 console.log(errorMsg);
-                return;
-            }
-            if (response.status === 201){
-                alert("Your account has been created!");
                 return;
             }
             // valid response will contain json data
