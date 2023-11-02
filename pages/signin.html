@@ -118,10 +118,10 @@ title: SignIn
                         console.log(errorMsg);
                         return;
                     }
-                    response.json().then(data => {
-                    const jwtToken = data.jwt; // Assuming you receive JWT in response
-                    setCookie("jwt", jwtToken, 1); // Expires in 1 hour
-                    });
+                    if (response.ok) {
+                        console.log('Successful fetch');
+                        return;
+                    }
                     // Success!!!
                     // Redirect to Database location
                     // window.location.href = "/APCSA/data/database";
@@ -146,6 +146,7 @@ title: SignIn
                 .then(response => {
                     if (response.ok) {
                         console.log(response);
+                        alert("Signed In!")
                         return;
                     }
                     if (response.status !== 200) {
@@ -153,12 +154,12 @@ title: SignIn
                         console.log(errorMsg);
                         return;
                     }
-                    // Valid response will contain JSON data
                     response.json().then(data => {
-                        console.log(data);
+                    const jwtToken = data.jwt; // Assuming you receive JWT in response
+                    setCookie("jwt", jwtToken, 1); // Expires in 1 hour
                     });
-                });
-        }
+                })
+                };
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
