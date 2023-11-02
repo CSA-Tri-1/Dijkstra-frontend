@@ -41,6 +41,24 @@ title: SignIn
         const put_url = "http://localhost:8084/api/usr/update";
         let currentField = "emailField";
 
+        // //
+        // //set a cookie email
+        // function setCookie(name, email, hours) {
+        // const expires = new Date();
+        // expires.setTime(expires.getTime() + (hours * 60 * 60 * 1000));
+        // document.cookie = `${name}=${email};expires=${expires.toUTCString()};path=/`;
+        // }
+
+        // // const email = emailInput.value;
+        // // setCookie("email", email, 1); // Expires in 1 hour
+
+        // // Function to get a cookie email
+        // function getCookie(name) {
+        // const value = `; ${document.cookie}`;
+        // const parts = value.split(`; ${name}=`);
+        // if (parts.length === 2) return parts.pop().split(';').shift();
+        // }
+        // //
         function showNextField() {
             const emailField = document.getElementById("emailField");
             const passwordField = document.getElementById("passwordField");
@@ -51,12 +69,14 @@ title: SignIn
                 document.querySelector("button").textContent = "Log In";
             } else if (currentField === "passwordField") {
                 login_user();
+                read_pull(); //
             }
 
         
         const signinForm = document.getElementById("signinForm");
         signinForm.addEventListener("submit", function (e) {
         login_user(e);
+        read_pull(); //
             })
         }
 
@@ -92,8 +112,8 @@ title: SignIn
                     "Content-Type": "application/json",
                 },
             };
-
-            // Fetch JWT
+        // new code begin
+            // Fetch JWT 
             fetch(login_url, authOptions)
                 .then(response => {
                     if (!response.ok) {
@@ -103,7 +123,6 @@ title: SignIn
                     }
                     if (response.ok) {
                         console.log('Successful fetch');
-                        alert("Your signed in successfully!");
                         return;
                     }
                     // Success!!!
@@ -112,7 +131,7 @@ title: SignIn
                 });
             }
         }
-
+        // new code end
         function read_pull() {
             // Set options for cross-origin header request
             const options = {
@@ -128,17 +147,27 @@ title: SignIn
             // Fetch the API
             fetch(read_url, options)
                 .then(response => {
+                    if (response.ok) {
+                        console.log(response);
+                        alert("Signed In!")
+                        return;
+                    }
                     if (response.status !== 200) {
                         const errorMsg = 'Database response error: ' + response.status;
                         console.log(errorMsg);
                         return;
                     }
-                    // Valid response will contain JSON data
-                    response.json().then(data => {
-                        console.log(data);
-                    });
-                });
-        }
+                    // response.json().then(data => {
+                    // // const jwtToken = data.jwt;
+                    // // const email = emailInput.value;
+                    // // setCookie("email", email, 1); // Expires in 1 hour
+                    // // setCookie("jwt", jwtToken, 1); // Expires in 1 hour
+                    // console.log(response);
+                    // alert("Signed In!")
+                    // return;
+                    // });
+                })
+                };
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

@@ -87,6 +87,7 @@ title: SignUp
             if (response.status === 201){
                 console.log('Account created!');
                 alert("Your account has been created!");
+                window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/signin";
                 return;
             }
             if (response.status !== 200) {

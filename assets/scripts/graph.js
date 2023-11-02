@@ -44,12 +44,23 @@ const graph = new joint.dia.Graph;
 const paperElement = document.getElementById('interactive-graph');
 const paper = new joint.dia.Paper({
     el: paperElement,
-    width: 800,
-    height: 400,
+    width: 1900,
+    height: 650,
     gridSize: 1,
     model: graph,
     sorting: joint.dia.Paper.sorting.APPROX,
-    defaultLink: () => new joint.shapes.standard.Link({ attrs: { line: { targetMarker: getTargetMarkerStyle(), stroke: outlineColor }}}),
+    defaultLink: () => new joint.shapes.standard.Link({
+        attrs: {
+            line: {
+                targetMarker: getTargetMarkerStyle(), stroke: outlineColor
+            }
+        },
+        markup: [
+            '<path class="connection" stroke="black" d="M 0 0 0 0"/>',
+            '<path class="marker-source" fill="none" stroke="none" d="0 0 0 0"/>',
+            '<path class="connection-wrap" d="M 0 0 0 0"/>',
+        ].join(''),
+    }),
     defaultConnectionPoint: { name: 'boundary', args: { offset: 4 }},
     linkPinning: false,
     async: true,
@@ -85,43 +96,43 @@ class Controller extends joint.mvc.Listener {
     }
   }
 
-// class ViewController extends Controller {
-//     startListening() {
-//         const { paper } = this.context;
+class ViewController extends Controller {
+    startListening() {
+        const { paper } = this.context;
 
-//         this.listenTo(paper, {
-//             'element:pointerdown': selectSource,
-//             'element:mouseenter': selectEnd,
-//             'element:mouseleave': hidePathOnMouseLeave,
-//         });
-//     }
-// }
+        this.listenTo(paper, {
+            'element:pointerdown': selectSource,
+            'element:mouseenter': selectEnd,
+            'element:mouseleave': hidePathOnMouseLeave,
+        });
+    }
+}
 
-// function selectSource({ setStartView }, elementView) {
-//     setStartView(elementView);
-// }
+function selectSource({ setStartView }, elementView) {
+    setStartView(elementView);
+}
 
-// function selectEnd({ showPath, setEndView, getStartView, getEndView }, elementView) {
-//     const pathStartView = getStartView();
-//     const pathEndView = getEndView();
-//     if (elementView === pathStartView) return;
-//     if (pathStartView && pathEndView) {
-//         joint.highlighters.addClass.remove(pathStartView, invalidPathHighlightId);
-//         joint.highlighters.addClass.remove(pathEndView, invalidPathHighlightId);
-//     }
-//     setEndView(elementView);
-//     showPath();
-// }
+function selectEnd({ showPath, setEndView, getStartView, getEndView }, elementView) {
+    const pathStartView = getStartView();
+    const pathEndView = getEndView();
+    if (elementView === pathStartView) return;
+    if (pathStartView && pathEndView) {
+        joint.highlighters.addClass.remove(pathStartView, invalidPathHighlightId);
+        joint.highlighters.addClass.remove(pathEndView, invalidPathHighlightId);
+    }
+    setEndView(elementView);
+    showPath();
+}
 
-// function hidePathOnMouseLeave({ hidePath, getStartView, getEndView, setEndView }) {
-//     const pathStartView = getStartView();
-//     const pathEndView = getEndView();
+function hidePathOnMouseLeave({ hidePath, getStartView, getEndView, setEndView }) {
+    const pathStartView = getStartView();
+    const pathEndView = getEndView();
 
-//     hidePath();
-//     if (pathStartView) joint.highlighters.addClass.remove(pathStartView, invalidPathHighlightId);
-//     if (pathEndView) joint.highlighters.addClass.remove(pathEndView, invalidPathHighlightId);
-//     setEndView(null);
-// }
+    hidePath();
+    if (pathStartView) joint.highlighters.addClass.remove(pathStartView, invalidPathHighlightId);
+    if (pathEndView) joint.highlighters.addClass.remove(pathEndView, invalidPathHighlightId);
+    setEndView(null);
+}
 
 
 class EditController extends Controller {
@@ -175,27 +186,6 @@ function replaceLink({ createLink }, link, _collection, opt) {
     
 }
 
-graph.on('remove', function (cell, link, opt) {
-    if (cell.isLink() && opt.ui) {
-        console.log("remove")
-        console.log(link)
-    //     const weight = link.attributes.weight;
-
-    //     const sId = sourceId;
-    //     const tId = targetId;
-
-    //     if (adj_List[sId - 1] && adj_List[sId - 1][tId - 1] !== 0) {
-    //         adj_List[sId - 1][tId - 1] = 10000;
-    //     }
-    //     if (adj_List[tId - 1] && adj_List[tId - 1][sId - 1] !== 0) {
-    //         adj_List[tId - 1][sId - 1] = 10000;
-    //     }
-
-    //     adj_List[sId - 1][tId - 1] = weight;
-    //     adj_List[tId - 1][sId - 1] = weight;
-    }
-});
-
 function removeElement({ setStartView, setEndView, getStartView }, elementView) {
     const pathStart = getStartView();
     // console.log(getStartView())
@@ -221,8 +211,8 @@ graph.on('change:position', function(cell) {
     }
 });
 
-// const viewController = new ViewController({ paper });
-const editController = new EditController({ graph, paper, createLink, createNode, getStartView, size });
+const viewController = new ViewController({ paper, selectSource, getStartView, getEndView, setEndView});
+const editController = new EditController({ graph, paper, createLink, createNode, getStartView, getEndView, size });
 
 editController.startListening();
 
@@ -292,7 +282,11 @@ function createLink(s, t) {
             },
             line: { targetMarker: getTargetMarkerStyle(), stroke: outlineColor } 
         },
-        
+        markup: [
+            '<path class="connection" stroke="black" d="M 0 0 0 0"/>',
+            '<path class="marker-source" fill="none" stroke="none" d="0 0 0 0"/>',
+            '<path class="connection-wrap" d="M 0 0 0 0"/>',
+        ].join(''),
     });
 
     link.appendLabel({
@@ -336,96 +330,98 @@ function createLink(s, t) {
 
 
 
-// function setStartView(elementView) {
-//     hidePath();
-//     if (startView) {
-//         joint.highlighters.mask.remove(startView, highlightId);
-//         joint.highlighters.addClass.remove(startView, invalidPathHighlightId);
-//     }
+function setStartView(elementView) {
+    hidePath();
+    if (startView) {
+        joint.highlighters.mask.remove(startView, highlightId);
+        joint.highlighters.addClass.remove(startView, invalidPathHighlightId);
+    }
 
-//     if (endView) {
-//         joint.highlighters.addClass.remove(endView, invalidPathHighlightId);
-//     }
+    if (endView) {
+        joint.highlighters.addClass.remove(endView, invalidPathHighlightId);
+    }
 
-//     if (elementView) {
-//         joint.highlighters.mask.add(elementView, 'body', highlightId, startAttrs);
-//     }
-//     startView = elementView;
-// }
+    if (elementView) {
+        joint.highlighters.mask.add(elementView, 'body', highlightId, startAttrs);
+        start.push(startNode)
+    }
+    startView = elementView;
+}
 
-// function setEndView(elementView) {
-//     endView = elementView;
-// }
+function setEndView(elementView) {
+    endView = elementView;
+    end.push(endNode)
+}
 
-// function getElementPath() {
-//     if (startView && endView) {
-//         return graph.shortestPath(startView.model, endView.model, { directed });
-//     }
+function getElementPath() {
+    if (startView && endView) {
+        return graph.shortestPath(startView.model, endView.model, { directed });
+    }
 
-//     return [];
-// }
+    return [];
+}
 
-// function getLinkPath(elementPath) {
-//     const linkPath = [];
+function getLinkPath(elementPath) {
+    const linkPath = [];
 
-//     if (startView) {
-//         for (let i = 0; i < elementPath.length - 1; i++) {
-//             const sourceId = elementPath[i];
-//             const targetId = elementPath[i + 1];
-//             const link = graph.getCell([sourceId, targetId].sort().join());
-//             if (!link) continue;
+    if (startView) {
+        for (let i = 0; i < elementPath.length - 1; i++) {
+            const sourceId = elementPath[i];
+            const targetId = elementPath[i + 1];
+            const link = graph.getCell([sourceId, targetId].sort().join());
+            if (!link) continue;
 
-//             linkPath.push(link.id);
-//             link.label(0, {
-//                 position: .5,
-//                 attrs: {
-//                     text: { text: ' ' + (i + 1) + ' ', fontSize: 10, fill: 'white' },
-//                     rect: { rx: 8, ry: 8, fill: blueColor, stroke: blueColor, strokeWidth: 5 }
-//                 },
-//             });
-//         }
-//     }
+            linkPath.push(link.id);
+            link.label(0, {
+                position: .5,
+                attrs: {
+                    text: { text: ' ' + (i + 1) + ' ', fontSize: 10, fill: 'white' },
+                    rect: { rx: 8, ry: 8, fill: blueColor, stroke: blueColor, strokeWidth: 5 }
+                },
+            });
+        }
+    }
 
-//     return linkPath;
-// }
+    return linkPath;
+}
 
-// function showPath() {
-//     const elementPath = getElementPath();
-//     const isPathFound = elementPath.length > 0;
+function showPath() {
+    const elementPath = getElementPath();
+    const isPathFound = elementPath.length > 0;
 
-//     if (!isPathFound && startView && endView && startView.id !== endView.id && !editMode) {
-//         joint.highlighters.addClass.add(startView, 'body', invalidPathHighlightId, {
-//             className: invalidPathClassName
-//         });
-//         joint.highlighters.addClass.add(endView, 'body', invalidPathHighlightId, {
-//             className: invalidPathClassName
-//         });
-//         hidePath();
-//         return;
-//     }
+    if (!isPathFound && startView && endView && startView.id !== endView.id && !editMode) {
+        joint.highlighters.addClass.add(startView, 'body', invalidPathHighlightId, {
+            className: invalidPathClassName
+        });
+        joint.highlighters.addClass.add(endView, 'body', invalidPathHighlightId, {
+            className: invalidPathClassName
+        });
+        hidePath();
+        return;
+    }
 
-//     if (startView) joint.highlighters.addClass.remove(startView, invalidPathHighlightId);
-//     if (endView) joint.highlighters.addClass.remove(endView, invalidPathHighlightId);
-//     hidePath();
-//     const linkPath = getLinkPath(elementPath);
+    if (startView) joint.highlighters.addClass.remove(startView, invalidPathHighlightId);
+    if (endView) joint.highlighters.addClass.remove(endView, invalidPathHighlightId);
+    hidePath();
+    const linkPath = getLinkPath(elementPath);
 
-//     for (const elementId of [...elementPath, ...linkPath]) {
-//         const element = graph.getCell(elementId);
-//         const view = element.findView(paper);
-//         const isLink = view.model.isLink();
-//         joint.highlighters.addClass.add(view, isLink ? 'line' : 'body', pathMemberHighlightId, {
-//             className: pathMemberClassName
-//         });
+    for (const elementId of [...elementPath, ...linkPath]) {
+        const element = graph.getCell(elementId);
+        const view = element.findView(paper);
+        const isLink = view.model.isLink();
+        joint.highlighters.addClass.add(view, isLink ? 'line' : 'body', pathMemberHighlightId, {
+            className: pathMemberClassName
+        });
 
-//         if (isLink) {
-//             element.set('z', 2);
-//         }
+        if (isLink) {
+            element.set('z', 2);
+        }
 
-//         pathMembersViews.push(view);
-//     }
+        pathMembersViews.push(view);
+    }
 
-//     document.getElementById('path').innerText = elementPath.join(' → ');
-// }
+    document.getElementById('path').innerText = elementPath.join(' → ');
+}
 
 function toggleLinkStyle() {
     if (linkStyle) paper.svg.removeChild(linkStyle);
@@ -462,7 +458,21 @@ let linkStyle = getLinkStyle();
 paper.svg.prepend(styles);
 // paper.svg.prepend(linkStyle);
 
+var zoomLevel = 1;
 
+document.getElementById('zoom-in').addEventListener('click', function() {
+    zoomLevel = Math.min(3, zoomLevel + 0.2);
+    var size = paper.getComputedSize();
+    paper.translate(0,0);
+    paper.scale(zoomLevel, zoomLevel, size.width / 2, size.height / 2);
+});
+
+document.getElementById('zoom-out').addEventListener('click', function() {
+    zoomLevel = Math.max(0.2, zoomLevel - 0.2);
+    var size = paper.getComputedSize();
+    paper.translate(0,0);
+    paper.scale(zoomLevel, zoomLevel, size.width / 2, size.height / 2);
+});
 
 
 
