@@ -88,6 +88,8 @@ title: SignIn
             if (currentField === "emailField" && emailInput.value.trim() === "") {
                 alert("Please enter your email");
                 return;
+                const email = emailInput.value;
+                setCookie("email", email, 1); // Expires in 1 hour
             } else if (currentField === "passwordField" && passwordInput.value.trim() === "") {
                 alert("Please enter your password");
                 return;
@@ -156,8 +158,6 @@ title: SignIn
                     }
                     response.json().then(data => {
                     const jwtToken = data.jwt;
-                    const email = emailInput.value;
-                    setCookie("email", email, 1); // Expires in 1 hour
                     setCookie("jwt", jwtToken, 1); // Expires in 1 hour
                     console.log(response);
                     alert("Signed In!")
