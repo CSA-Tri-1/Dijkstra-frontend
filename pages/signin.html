@@ -150,6 +150,7 @@ title: SignIn
                         console.log(response);
                         alert("Signed In!")
                         return;
+                        window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
                     }
                     if (response.status !== 200) {
                         const errorMsg = 'Database response error: ' + response.status;
@@ -165,7 +166,6 @@ title: SignIn
                     // alert("Signed In!")
                     // return;
                     // });
-                    window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
                 })
                 };
     </script>
