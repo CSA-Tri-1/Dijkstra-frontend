@@ -89,6 +89,9 @@ title: SignUp
                 console.log(errorMsg);
                 return;
             }
+            if (response.status == 201){
+                alert("Your account has been created!")
+            }
             // valid response will contain json data
             response.json().then(data => {
                 console.log(data);
