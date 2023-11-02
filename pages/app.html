@@ -25,6 +25,7 @@ title: App
 <script>
   var nodes_array = [];
   var node_coords = [];
+  var edge_array = [];
   var adj_List = [];
   var start = [];
   var end = [];
@@ -35,6 +36,41 @@ title: App
 
     start.push(startNode)
     end.push(endNode)
+
+    //fetch template
+
+    // Sample JSON payload
+    const payload = {
+      adjacencyList: adj_List,
+      source: parseInt(start),
+      target: parseInt(end)
+    };
+
+    // Backend URL
+    const backendURL = 'https://daddjbackend.stu.nighthawkcodingsociety.com/api/dijkstra/';
+
+    // Creating a new XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', backendURL, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    // Handling the response from the server
+    xhr.onload = function() {
+      if(xhr.status >= 200 && xhr.status < 300) {
+        const response = JSON.parse(xhr.responseText);
+        console.log('Response from server:', response);
+      } else {
+        console.error('Request failed with status:', xhr.status);
+      }
+    };
+
+    // Handling errors during the request
+    xhr.onerror = function() {
+      console.error('Request failed');
+    };
+
+    // Sending the request with the JSON payload
+    xhr.send(JSON.stringify(payload));
   }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.js"></script>

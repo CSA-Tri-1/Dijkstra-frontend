@@ -169,10 +169,32 @@ function replaceLink({ createLink }, link, _collection, opt) {
     const sourceId = link.get('source').id;
     const targetId = link.get('target').id;
     if (opt.ui && sourceId && targetId) {
-        link.remove();
         createLink(sourceId, targetId);
-    }    
+        link.remove();
+    }
+    
 }
+
+graph.on('remove', function (cell, link, opt) {
+    if (cell.isLink() && opt.ui) {
+        console.log("remove")
+        console.log(link)
+    //     const weight = link.attributes.weight;
+
+    //     const sId = sourceId;
+    //     const tId = targetId;
+
+    //     if (adj_List[sId - 1] && adj_List[sId - 1][tId - 1] !== 0) {
+    //         adj_List[sId - 1][tId - 1] = 10000;
+    //     }
+    //     if (adj_List[tId - 1] && adj_List[tId - 1][sId - 1] !== 0) {
+    //         adj_List[tId - 1][sId - 1] = 10000;
+    //     }
+
+    //     adj_List[sId - 1][tId - 1] = weight;
+    //     adj_List[tId - 1][sId - 1] = weight;
+    }
+});
 
 function removeElement({ setStartView, setEndView, getStartView }, elementView) {
     const pathStart = getStartView();
@@ -290,7 +312,7 @@ function createLink(s, t) {
         const maxId = Math.max(sId, tId);
 
         while (adj_List.length < maxId) {
-            adj_List.push(Array(maxId).fill(0));
+            adj_List.push(Array(maxId).fill(10000));
         }
 
         adj_List[sId - 1][tId - 1] = distance;
@@ -300,8 +322,6 @@ function createLink(s, t) {
     }
 
     link.addTo(graph);
-
-    console.log(link.attributes.distance)
     
     var view = link.findView(paper);
     view.addTools(new joint.dia.ToolsView({
@@ -310,7 +330,7 @@ function createLink(s, t) {
             new joint.linkTools.Remove({ distance: '10%' })
         ]
     }));
-
+    edge_array.push(link)
     view.hideTools();
 }
 
