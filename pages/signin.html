@@ -51,12 +51,14 @@ title: SignIn
                 document.querySelector("button").textContent = "Log In";
             } else if (currentField === "passwordField") {
                 login_user();
+                read_pull(); //
             }
 
         
         const signinForm = document.getElementById("signinForm");
         signinForm.addEventListener("submit", function (e) {
         login_user(e);
+        read_pull(); //
             })
         }
 
