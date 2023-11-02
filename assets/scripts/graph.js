@@ -305,14 +305,20 @@ function createLink(s, t) {
         const distance = link.attributes.distance;
         const maxId = Math.max(sId, tId);
 
-        while (adj_List.length < maxId) {
-            adj_List.push(Array(maxId).fill(10000));
+        let adj_List = Array(maxId).fill().map(() => Array(maxId));
+        
+        for (let i = 0; i < adj_List.length; i++) {
+            for (let j = 0; j < adj_List.length; j++) {
+                adj_List[i][i] = 100000;
+            }
         }
 
         adj_List[sId - 1][tId - 1] = distance;
         adj_List[tId - 1][sId - 1] = distance;
 
-        
+        for (let i = 0; i<adj_List.length; i++) {
+            adj_List[i][i] = 0;
+        }
     }
 
     link.addTo(graph);
