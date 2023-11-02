@@ -33,15 +33,15 @@ title: SignUp
     </section>
     <script>
         let currentField = "nameInput";
-        const login_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/authenticate";
+        const login_url = "http://localhost:8084/authenticate";
         // prepare URL
         //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
         // Uncomment next line for localhost testing
-        const read_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/api/usr/";
+        const read_url = "http://localhost:8084/api/usr/";
         //var url = "https://spring.nighthawkcodingsociety.com/api/person/";
         // Uncomment next line for localhost testing
-        const post_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/api/usr/post";
-        const put_url = "https://daddjbackend.stu.nighthawkcodingsociety.com/api/usr/update";
+        const post_url = "http://localhost:8084/api/usr/post";
+        const put_url = "http://localhost:8084/api/usr/update";
         function create_user(event) {
             event.preventDefault();
             const createBody = {
@@ -88,6 +88,9 @@ title: SignUp
                 const errorMsg = 'Database response error: ' + response.status;
                 console.log(errorMsg);
                 return;
+            }
+            if (response.status == 201){
+                alert("Your account has been created!")
             }
             // valid response will contain json data
             response.json().then(data => {
