@@ -21,21 +21,13 @@ const startAttrs = {
 let nextId = 0;
 let editMode = true; // temp true
 const size = 40;
-const getTargetMarkerStyle = () => ({ type: 'path', fill: blackColor, stroke: blackColor });
+const getTargetMarkerStyle = () => ({ type: 'path', d: null , fill: blackColor, stroke: blackColor });
 const getLinkStyle = () => {
-    return directed ?
-        V.createSVGStyle(`
-            .joint-link .${pathMemberClassName} {
-                stroke: ${blueColor};
-                stroke-dasharray: 5;
-                stroke-dashoffset: 100;
-                animation: dash 1.25s infinite linear;
-            }
-        `) : V.createSVGStyle(`
-            .joint-link .${pathMemberClassName} {
-                animation: stroke 0.6s ease-in-out infinite alternate;
-            }
-        `);
+    return V.createSVGStyle(`
+    .joint-link .${pathMemberClassName} {
+        animation: stroke 0.6s ease-in-out infinite alternate;
+    }
+`);
 }
 const getStartView = () => startView;
 const getEndView = () => endView;
@@ -55,11 +47,6 @@ const paper = new joint.dia.Paper({
                 targetMarker: getTargetMarkerStyle(), stroke: outlineColor
             }
         },
-        markup: [
-            '<path class="connection" stroke="black" d="M 0 0 0 0"/>',
-            '<path class="marker-source" fill="none" stroke="none" d="0 0 0 0"/>',
-            '<path class="connection-wrap" d="M 0 0 0 0"/>',
-        ].join(''),
     }),
     defaultConnectionPoint: { name: 'boundary', args: { offset: 4 }},
     linkPinning: false,
@@ -187,7 +174,6 @@ function replaceLink({ createLink }, link, _collection, opt) {
 
 function removeElement({ setStartView, setEndView, getStartView }, elementView) {
     const pathStart = getStartView();
-    // console.log(getStartView())
     if (elementView.model.id === pathStart.model.id) {
         setStartView(null);
         setEndView(null);
@@ -199,7 +185,7 @@ function removeElement({ setStartView, setEndView, getStartView }, elementView) 
 function addElement({ createNode, size }, _evt, x, y) {
     const node = createNode(getNodeId(), x - size / 2, y - size / 2);
     node.position(x - size / 2, y - size / 2);
-    nodes_array.push(node.attributes.id);
+    nodes_array.push(node);
 }
 
 graph.on('change:position', function(cell) {
@@ -210,8 +196,8 @@ graph.on('change:position', function(cell) {
     }
 });
 
-const viewController = new ViewController({ paper, selectSource, getStartView, getEndView, setEndView});
-const editController = new EditController({ graph, paper, createLink, createNode, getStartView, getEndView, size });
+const viewController = new ViewController({ paper, showPath, hidePath, setStartView, setEndView, getStartView, getEndView });
+const editController = new EditController({ graph, paper, createLink, createNode, setStartView, setEndView, getStartView, size });
 
 editController.startListening();
 function getCurrentID() {
@@ -283,11 +269,6 @@ function createLink(s, t) {
             },
             line: { targetMarker: getTargetMarkerStyle(), stroke: outlineColor } 
         },
-        markup: [
-            '<path class="connection" stroke="black" d="M 0 0 0 0"/>',
-            '<path class="marker-source" fill="none" stroke="none" d="0 0 0 0"/>',
-            '<path class="connection-wrap" d="M 0 0 0 0"/>',
-        ].join(''),
     });
 
     link.appendLabel({
@@ -343,22 +324,18 @@ function setStartView(elementView) {
 
     if (elementView) {
         joint.highlighters.mask.add(elementView, 'body', highlightId, startAttrs);
-        start.push(startNode)
     }
     startView = elementView;
 }
 
 function setEndView(elementView) {
     endView = elementView;
-    end.push(endNode)
 }
 
 function getElementPath() {
-    if (startView && endView) {
-        return graph.shortestPath(startView.model, endView.model, { directed });
-    }
-
-    return [];
+    console.log(window.response)
+    
+    return window.response;
 }
 
 function getLinkPath(elementPath) {
@@ -420,7 +397,22 @@ function showPath() {
         pathMembersViews.push(view);
     }
 
-    document.getElementById('path').innerText = elementPath.join(' → ');
+    // document.getElementById('path').innerText = elementPath.join(' → ');
+}
+
+function hidePath() {
+    for (const view of pathMembersViews) {
+        const model = view.model;
+        joint.highlighters.addClass.remove(view, pathMemberHighlightId);
+
+        if (model.isLink()) {
+            model.set('z', 1);
+            model.labels([]);
+        }
+    }
+
+    pathMembersViews = [];
+    // document.getElementById('path').innerText = '';
 }
 
 function toggleLinkStyle() {
@@ -456,7 +448,7 @@ const styles = V.createSVGStyle(`
 let linkStyle = getLinkStyle();
 
 paper.svg.prepend(styles);
-// paper.svg.prepend(linkStyle);
+paper.svg.prepend(linkStyle);
 
 var zoomLevel = 1;
 
@@ -474,10 +466,44 @@ document.getElementById('zoom-out').addEventListener('click', function() {
     paper.scale(zoomLevel, zoomLevel, size.width / 2, size.height / 2);
 });
 
+function toggleView() {
+    for(const element of graph.getElements()) {
+        element.attr('body/cursor', editMode ? 'move' : 'pointer');
+    }
 
+    if (editMode) {
+        viewController.stopListening();
+        editController.startListening();
+        hidePath();
+        if (startView) {
+            joint.highlighters.mask.remove(startView, highlightId);
+            joint.highlighters.addClass.remove(startView, invalidPathHighlightId);
+        }
+        if (endView) {
+            joint.highlighters.addClass.remove(endView, invalidPathHighlightId);
+        }
+    } else {
+        viewController.startListening();
+        editController.stopListening();
+        showPath();
+        if (startView) {
+            joint.highlighters.mask.add(startView, 'body', highlightId, startAttrs);
+        }
+    }
+}
 
+// document.getElementById('directed-graph-toggle').addEventListener('change', (evt) => {
+//     directed = evt.target.checked;
+//     hidePath();
+//     if (!editMode) showPath();
+//     graph.getLinks().forEach((link) => {
+//         link.attr('line/targetMarker', getTargetMarkerStyle());
+//     });
+//     toggleLinkStyle();
+// });
 
-
-
-
-
+document.getElementById('edit-mode-toggle').addEventListener('click', function(evt) {
+    editMode = evt.target.checked
+    toggleView();
+    console.log("hello")
+});

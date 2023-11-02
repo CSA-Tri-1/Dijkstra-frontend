@@ -92,8 +92,8 @@ title: App
     // Handling the response from the server
     xhr.onload = function() {
       if(xhr.status >= 200 && xhr.status < 300) {
-        const response = JSON.parse(xhr.responseText);
-        console.log('Response from server:', response);
+        window.response = JSON.parse(xhr.responseText);
+        console.log('Response from server:', window.response);
         const responseContainer = document.getElementById('responseContainer');
         responseContainer.innerHTML = '';
 
@@ -130,7 +130,7 @@ title: App
   <span id="zoom-out" class="btn">Zoom Out</span>
   <span id="zoom-in" class="btn">Zoom In</span>
 </div>
-<button class="btn" id="edit" onclick="setMode(editMode)">Edit Mode</button>
+<button class="btn" id="edit-mode-toggle">Edit Mode</button>
 <div id="interactive-graph"></div>
 <div>
   <p>Start: </p>
