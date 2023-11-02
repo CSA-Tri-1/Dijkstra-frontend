@@ -123,8 +123,8 @@ title: SignIn
                     }
                     if (response.ok) {
                         console.log('Successful fetch');
+                        alert("Signed In!");
                         return;
-                        window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
                     }
                     // Success!!!
                     // Redirect to Database location
@@ -148,23 +148,19 @@ title: SignIn
             fetch(read_url, options)
                 .then(response => {
                     if (response.status === 200) {
-                        console.log(response);
-                        alert("Signed In!");
-                        return;
                         window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
-                    }
-                    if (response.status !== 200) {
-                        const errorMsg = 'Database response error: ' + response.status;
-                        console.log(errorMsg);
-                        alert("Bad password/username input");
                         return;
-                        window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
                     }
                     if (response.status === 401) {
                         alert("Bad password/username input");
                         console.log(errorMsg);
                         return;
-                        window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
+                    }
+                    if (response.status !== 200) {
+                        const errorMsg = 'Database response error: ' + response.status;
+                        alert("Uh oh something went wrong :(")
+                        console.log(errorMsg);
+                        return;
                     }
                     // response.json().then(data => {
                     // // const jwtToken = data.jwt;
