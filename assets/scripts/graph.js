@@ -199,7 +199,7 @@ function removeElement({ setStartView, setEndView, getStartView }, elementView) 
 function addElement({ createNode, size }, _evt, x, y) {
     const node = createNode(getNodeId(), x - size / 2, y - size / 2);
     node.position(x - size / 2, y - size / 2);
-    nodes_array.push(node);
+    nodes_array.push(node.attributes.id);
 }
 
 graph.on('change:position', function(cell) {
@@ -304,6 +304,13 @@ function createLink(s, t) {
         const sId = link.attributes.source.id;
         const tId = link.attributes.target.id;
         const distance = link.attributes.distance;
+
+
+        const maxId = Math.max(sId, tId);
+
+        while (adj_List.length < maxId) {
+            adj_List.push(Array(maxId).fill(10000));
+        }
 
         adj_array.push([sId - 1, tId - 1, distance])
     }
