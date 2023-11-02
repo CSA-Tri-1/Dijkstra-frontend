@@ -155,7 +155,9 @@ title: SignIn
                         return;
                     }
                     response.json().then(data => {
-                    const jwtToken = data.jwt; // Assuming you receive JWT in response
+                    const jwtToken = data.jwt;
+                    const email = emailInput.value;
+                    setCookie("email", email, 1); // Expires in 1 hour
                     setCookie("jwt", jwtToken, 1); // Expires in 1 hour
                     console.log(response);
                     alert("Signed In!")
