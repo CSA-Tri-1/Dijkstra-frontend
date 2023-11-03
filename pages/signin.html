@@ -51,14 +51,12 @@ title: SignIn
                 document.querySelector("button").textContent = "Log In";
             } else if (currentField === "passwordField") {
                 login_user();
-                read_pull(); //
             }
 
         
         const signinForm = document.getElementById("signinForm");
         signinForm.addEventListener("submit", function (e) {
         login_user(e);
-        read_pull(); //
             })
         }
 
@@ -106,6 +104,7 @@ title: SignIn
                         // Successfully logged in, now set the email in a cookie
                         setCookie("email", emailInput.value, 1); // Set the email cookie for an hour
                         console.log('Successful fetch');
+                        read_pull();
                         return;
                     }
                     // Success!!!
