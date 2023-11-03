@@ -123,7 +123,6 @@ title: SignIn
                     }
                     if (response.ok) {
                         console.log('Successful fetch');
-                        alert("Signed In!");
                         return;
                     }
                     // Success!!!
@@ -148,22 +147,20 @@ title: SignIn
             fetch(read_url, options)
                 .then(response => {
                     if (response.status === 200) {
+                        alert("Signed In!");
                         window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
-                        return;
+                    } else if (response.status === 401) {
+                        alert("Bad password/username input");
+                        console.error("Bad password/username input"); // Use console.error for errors
+                    } else {
+                        const errorMsg = 'Database response error: ' + response.status;
+                        alert("Uh oh, something went wrong :(");
+                        console.error(errorMsg);
                     }
                 })
-                .catch(error =>{
-                    if (response.status === 401) {
-                        alert("Bad password/username input");
-                        console.log(errorMsg);
-                        return;
-                    }
-                    if (response.status !== 200) {
-                        const errorMsg = 'Database response error: ' + response.status;
-                        alert("Uh oh something went wrong :(")
-                        console.log(errorMsg);
-                        return;
-                    }
+                .catch(error => {
+                    // Handle network errors or exceptions here
+                    console.error("Network error:", error);
                 });
                     // response.json().then(data => {
                     // // const jwtToken = data.jwt;
