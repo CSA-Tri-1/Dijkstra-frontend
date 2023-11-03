@@ -56,6 +56,7 @@ title: SignIn
         
         const signinForm = document.getElementById("signinForm");
         signinForm.addEventListener("submit", function (e) {
+        e.preventDefault();
         login_user(e);
             })
         }
@@ -94,24 +95,22 @@ title: SignIn
             };
             // Fetch JWT 
             fetch(login_url, authOptions)
-                .then(response => {
-                    if (!response.ok) {
-                        const errorMsg = 'Login error: ' + response.status;
-                        console.log(errorMsg);
-                        return;
-                    }
-                    if (response.ok) {
-                        // Successfully logged in, now set the email in a cookie
-                        setCookie("email", emailInput.value, 1); // Set the email cookie for an hour
-                        console.log('Successful fetch');
-                        read_pull();
-                        return;
-                    }
-                    // Success!!!
-                    // Redirect to Database location
-                });
-            }
-        }
+            .then(response => {
+                if (response.status === 401) {
+                    alert("Incorrect email or password. Please try again.");
+                    console.log('Authentication failed');
+                } else if (response.ok) {
+                    // Successfully logged in, now set the email in a cookie
+                    setCookie("email", emailInput.value, 1); // Set the email cookie for an hour
+                    console.log('Successful fetch');
+                    read_pull();
+                }
+            })
+            .catch(error => {
+                console.error("Network error:", error);
+            });
+    }
+}
 
         // Function to set a cookie
         function setCookie(name, value, days) {
