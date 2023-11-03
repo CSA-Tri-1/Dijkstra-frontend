@@ -94,7 +94,6 @@ title: SignIn
                     "Content-Type": "application/json",
                 },
             };
-        // new code begin
             // Fetch JWT 
             fetch(login_url, authOptions)
                 .then(response => {
@@ -139,23 +138,28 @@ title: SignIn
             // Fetch the API
             fetch(read_url, options)
                 .then(response => {
-                    if (response.status === 200) {
-                        console.log("Success loser!");
-                        return;
-                        // window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
-                    } else if (response.status === 401) {
+                    if (response.status === 401) {
                         alert("Bad password/username input");
                         console.error("Bad password/username input");
+                        return;
+                    } else if (response.status === 200) {
+                        console.log("Success loser!");
+                        // Only show the alert if the login was successful
+                        alert("Successful Signin!");
+                        // Redirect after alert
+                        window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
+                        return;
                     } else {
                         const errorMsg = 'Database response error: ' + response.status;
                         alert("Uh oh, something went wrong :(");
                         console.error(errorMsg);
+                        return;
                     }
-                })
-                .catch(error => {
-                    // Handle network errors or exceptions here
-                    console.error("Network error:", error);
-                });
+            })
+            .catch(error => {
+                // Handle network errors or exceptions here
+                console.error("Network error:", error);
+            });
         }
 
         function getEmailFromCookie() {
