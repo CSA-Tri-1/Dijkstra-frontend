@@ -20,7 +20,15 @@ const startAttrs = {
 let nextId = 0;
 let editMode = true;
 const size = 40;
-const getTargetMarkerStyle = () => ({ type: 'path', d: null , fill: blackColor, stroke: blackColor });
+const getTargetMarkerStyle = () => ({
+    type: 'path',
+    d: null ,
+    fill: blackColor,
+    stroke: blackColor,
+    tools: {
+        linkTools: []
+    }
+});
 const getLinkStyle = () => {
     return V.createSVGStyle(`
     .joint-link .${pathMemberClassName} {
@@ -35,7 +43,7 @@ const graph = new joint.dia.Graph;
 const paperElement = document.getElementById('interactive-graph');
 const paper = new joint.dia.Paper({
     el: paperElement,
-    width: 1900,
+    width: 800,
     height: 650,
     gridSize: 1,
     model: graph,
@@ -43,7 +51,8 @@ const paper = new joint.dia.Paper({
     defaultLink: () => new joint.shapes.standard.Link({
         attrs: {
             line: {
-                targetMarker: getTargetMarkerStyle(), stroke: outlineColor
+                targetMarker: getTargetMarkerStyle(),
+                stroke: outlineColor
             }
         },
     }),
@@ -73,6 +82,13 @@ const paper = new joint.dia.Paper({
     }
 });
 var namespace = joint.shapes;
+
+document.getElementById('restart-button').addEventListener('click', function(evt) {
+    editMode = evt.target.checked
+    location.reload();
+    toggleView();
+    graph.clear();
+});
 
 class Controller extends joint.mvc.Listener {
     get context() {
@@ -131,23 +147,12 @@ class EditController extends Controller {
         });
 
         this.listenTo(paper, {
-            'link:mouseenter': showLinkTools,
-            'link:mouseleave': hideLinkTools,
             'element:mouseenter': showElementTools,
             'element:mouseleave': hideElementTools,
             'element:pointerdblclick': removeElement,
             'blank:pointerdblclick': addElement
-            // 'element:pointerdown': changeWeight
         });
     }
-}
-
-function showLinkTools(_context, linkView, _evt) {
-    linkView.showTools();
-}
-
-function hideLinkTools(_context, linkView) {
-    linkView.hideTools();
 }
 
 function showElementTools(_context, elementView, _evt) {
@@ -200,6 +205,7 @@ const viewController = new ViewController({ paper, showPath, hidePath, setStartV
 const editController = new EditController({ graph, paper, createLink, createNode, setStartView, setEndView, getStartView, size });
 
 editController.startListening();
+
 function getCurrentID() {
     return current_index;
 }
@@ -274,7 +280,14 @@ function createLink(s, t) {
     link.appendLabel({
         attrs: {
             text: {
-                text: link.attributes.distance
+                text: link.attributes.distance,
+                fill: 'white' 
+            },
+            rect: {
+                rx: 3,
+                fill: blackColor,
+                stroke: blackColor,
+                strokeWidth: 8
             }
         }
     });
@@ -300,10 +313,7 @@ function createLink(s, t) {
     
     var view = link.findView(paper);
     view.addTools(new joint.dia.ToolsView({
-        tools: [
-            new joint.linkTools.Vertices(),
-            new joint.linkTools.Remove({ distance: '10%' })
-        ]
+        tools: []
     }));
     edge_array.push(link)
     view.hideTools();
@@ -370,18 +380,7 @@ function getElementPath() {
             if(xhr.status >= 200 && xhr.status < 300) {
                 const response = JSON.parse(xhr.responseText);
                 console.log('Response from server:', response);
-                const responseContainer = document.getElementById('responseContainer');
-                responseContainer.innerHTML = '';
-        
-                const ul = document.createElement('ul');
-                    ul.classList.add('arrows-list');
-                    response.forEach((item) => {
-                        const li = document.createElement('li');
-                        li.textContent = item;
-                        ul.appendChild(li);
-                    });
-        
-                responseContainer.appendChild(ul);
+                
                 resolve(response)
             } else {
                 console.error('Request failed with status:', xhr.status);
@@ -409,13 +408,6 @@ function getLinkPath(elementPath) {
             if (!link) continue;
 
             linkPath.push(link.id);
-            link.label(0, {
-                position: .5,
-                attrs: {
-                    text: { text: ' ' + (i + 1) + ' ', fontSize: 10, fill: 'white' },
-                    rect: { rx: 8, ry: 8, fill: blueColor, stroke: blueColor, strokeWidth: 5 }
-                },
-            });
         }
     }
 
@@ -425,9 +417,7 @@ function getLinkPath(elementPath) {
 async function showPath() {
    
         const elementPath = await getElementPath();
-        console.log(elementPath);
         const isPathFound = elementPath.length > 0;
-        console.log(isPathFound)
         if (!isPathFound && startView && endView && startView.id !== endView.id && !editMode) {
             joint.highlighters.addClass.add(startView, 'body', invalidPathHighlightId, {
                 className: invalidPathClassName

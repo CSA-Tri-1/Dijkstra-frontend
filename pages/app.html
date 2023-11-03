@@ -4,47 +4,11 @@ title: App
 ---
 
 <style>
-  :root {
-    --bg-blue: #4666E5;
-    --toggle-height: 20px;
-    --toggle-width: 35px;
-  }
   #interactive-graph {
     border: 3px solid black;
     border-radius: 10px;
-    margin: 0 auto;
-    top: 5%;
-    width: 500px;
-    height: 500px;
-    overflow: hidden;
   }
-  #startNode {
-    border-color: black;
-  }
-  ul {
-    list-style: none;
-    display: flex;
-    align-items: center;
-  }
-
-  li {
-    display: inline-block;
-    margin: 0 10px;
-    position: relative;
-  }
-  li:after {
-    content: '→';
-    position: absolute;
-    right: -15px;
-  }
-  li:last-child:after {
-    content: '';
-  }
-  input {
-    background-color: #ececec77;
-    border: solid;
-    border-radius: 10px;
-  }
+  
 </style>
 <script>
   var nodes_array = [];
@@ -55,22 +19,6 @@ title: App
   var start = [];
   var end = [];
   var current_index = 0;
-
-  function submit() {
-    // adj_List = Array(current_index).fill().map(() => Array(current_index).fill(10000));
-    // for (let i = 0; i < adj_array.length; i++) {
-    //   adj_List[adj_array[i][0]][adj_array[i][1]] = adj_array[i][2];
-    //   adj_List[adj_array[i][1]][adj_array[i][0]] = adj_array[i][2];
-    // }
-    // for (let i = 0; i < current_index; i ++){
-    //   adj_List[i][i] = 0;
-    // }
-
-    //fetch template
-
-    // Sample JSON payload
-    
-  }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
@@ -78,17 +26,45 @@ title: App
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.7.5/joint.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jointjs/dist/joint.min.css">
 <script type="module" src="{{ site.baseurl }}/assets/scripts/graph.js"></script>
-<div>
-  <span id="zoom-out" class="btn">Zoom Out</span>
-  <span id="zoom-in" class="btn">Zoom In</span>
+
+<div class="flex justify-center items-center h-full">
+  <div class="card pl-200 ml-10 mr-5 w-96 bg-base-200 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title SFPro-Round-Regular">How to Use</h2>
+      <p id="add-nodes-instructions" class="SFPro-Round-Light">Double-click to add nodes</p>
+      <p id="add-nodes-instructions" class="SFPro-Round-Light">Click on node edge and drag to the desired node to connect nodes</p>
+      <p id="connect-nodes-instructions" class="SFPro-Round-Light">Click on the source node</p>
+      <p id="connect-nodes-instructions" class="SFPro-Round-Light">Hover over any node to find the shortest path</p>
+      <div class="card-actions justify-center pt-5">
+        <button class="btn btn-outline btn-info" id="edit-mode-toggle" onclick="toggleEditMode()">Done</button>
+        <button class="btn btn-outline btn-error hidden" id="restart-button" onclick="toggleEditMode()">Restart</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="flex justify-center p-3">
+      <span id="zoom-out" class="btn btn-outline mr-4 SFPro-Round-Light">Zoom +</span>
+      <span id="zoom-in" class="btn btn-outline SFPro-Round-Light">Zoom -</span>
+    </div>
+    <div id="interactive-graph" class="ml-5"></div>
+  </div>
 </div>
-<button class="btn" id="edit-mode-toggle">Edit Mode</button>
-<div id="interactive-graph"></div>
-<div>
-  <p>Start: </p>
-  <input type="integer" id="startNode" name="startNode">
-  <p>End: </p>
-  <input type="integer" id="endNode" name="endNode">
-</div>
-<button onclick="submit()" class="btn btn-ghost">Submit</button>
-<div id="responseContainer"></div>
+
+<script>
+  function toggleEditMode() {
+    const doneButton = document.getElementById("edit-mode-toggle");
+    const restartButton = document.getElementById("restart-button");
+    const addNodesInstructions = document.getElementById("add-nodes-instructions");
+    const connectNodesInstructions = document.getElementById("connect-nodes-instructions");
+
+    if (doneButton.textContent === "Done") {
+      doneButton.textContent = "Restart";
+      restartButton.classList.remove("hidden");
+      doneButton.classList.add("hidden");
+    } else {
+      doneButton.textContent = "Done";
+      doneButton.classList.remove("hidden");
+      restartButton.classList.add("hidden");
+    }
+  }
+</script>
