@@ -97,20 +97,13 @@ title: SignIn
             fetch(login_url, authOptions)
             .then(response => {
                 if (response.status === 401) {
-                    alert("Bad password/username input");
+                    alert("Incorrect email or password :( Please try again!");
                     console.log('Authentication failed');
-                    return;
                 } else if (response.ok) {
                     // Successfully logged in, now set the email in a cookie
                     setCookie("email", emailInput.value, 1); // Set the email cookie for an hour
                     console.log('Successful fetch');
                     read_pull();
-                    return;
-                }
-                else {
-                const errorMsg = 'Server returned an error: ' + response.status;
-                console.error(errorMsg);
-                alert("Uh oh, something went wrong :(");
                 }
             })
             .catch(error => {
