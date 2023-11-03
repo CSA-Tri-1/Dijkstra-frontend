@@ -3,8 +3,8 @@ layout: default
 title: About
 ---
 
-<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/about.css" />
-<script src="{{ site.baseurl }}/assets/scripts/about.js" defer></script>
+<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/about.css" /> <!-- Jekyll with HTML-->
+<script src="{{ site.baseurl }}/assets/scripts/about.js" defer></script> <!-- Jekyll with HTML-->
 <div class="imgs">
   <img
     src="/logo.png"
@@ -22,19 +22,15 @@ title: About
 
 <section class="top-section full-screen-section">
   <div class="left">
-    <h1>Dijkstra Description</h1>
+    <h1 style="text-align: center;">Dijkstra Description</h1>
   </div>
   <div class="right">
     <section class="sec-1">
         <div class="container reveal fade-right">
-          <h2>Caption</h2>
+          <h2>Description</h2>
           <div class="text-container">
             <div class="text-box">
-              <h1>Section Text</h1>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
-                eius molestiae perferendis eos provident vitae iste.
-              </p>
+              <a href="https://github.com/CSA-Tri-1/CSATri1/issues/29">Click me for a detailed explanation</a>
             </div>
               </p>
             </div>
@@ -43,43 +39,15 @@ title: About
       </section>
   </div>
 
-  
   <section class="top-section full-screen-section">
   <div class="left">
     <section class="sec-1">
         <div class="container reveal fade-bottom">
-          <h2>Caption</h2>
+          <h2>Fetch Connection</h2>
           <div class="text-container">
             <div class="text-box">
-              <h1>Section Text</h1>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
-                eius molestiae perferendis eos provident vitae iste.
-              </p>
-            </div>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-  </div>
-
-  <section class="top-section full-screen-section">
-    <div class="right">
-      <h1 style="text-align: center;">Fetch Connection</h1>
-    </div>
-    
-
-  <div class="left">
-    <section class="sec-1">
-        <div class="container reveal fade-left">
-          <h2>Caption</h2>
-          <div class="text-container">
-            <div class="text-box">
-              <h1>Section Text</h1>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
-                eius molestiae perferendis eos provident vitae iste.
+              <p style="text-align: center;">
+                In a modern web application architecture, the connection between the backend and frontend is crucial for seamless functionality. When utilizing Amazon Web Services (AWS) to deploy the backend and GitHub Pages to host the frontend, this connection is established through a well-defined pipeline. AWS offers a robust infrastructure for hosting and managing the backend services, ensuring scalability, reliability, and security. On the other hand, GitHub Pages simplifies the deployment of the frontend by providing an easy-to-use platform for serving static content. The backend, hosted on AWS, communicates with the frontend hosted on GitHub Pages through APIs and web requests, creating a bridge that allows data transfer, user interactions, and a cohesive user experience. This setup not only streamlines development and deployment processes but also provides a cost-effective and reliable solution for web applications.
               </p>
             </div>
               </p>
@@ -90,7 +58,85 @@ title: About
   </div>
 </section>
 
+  <section class="top-section full-screen-section">
+<div class="right">
+  <h1 style="text-align: center;">JointJS (Frontend)</h1>
+</div>
 
+
+  <div class="left">
+    <section class="sec-1">
+        <div class="container reveal fade-left">
+          <div class="text-container">
+            <div class="text-box">
+              <h1 style="text-align: center;"><a href="https://github.com/CSA-Tri-1/CSATri1/issues/31">LINK</a></h1>
+              <p style="text-align: center;">
+                Link above about more information on jointJS used in our code, particulary on the front end of our dijkstra's algorithm.
+              </p>
+            </div>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+  </div>
+</section>
+
+  <section class="top-section full-screen-section">
+    <div class="left">
+      <section class="sec-1">
+          <div class="container reveal fade-bottom">
+            <h2>Jekyll with HTML</h2>
+            <div class="text-container">
+              <div class="text-box">
+                <h1 style="text-align: center;"><a href = "https://github.com/CSA-Tri-1/DADDiJkstra-frontend/blob/main/pages/about.html">LINK</a></h1>
+                <p style="text-align: center;" class = "my-paragraph">
+                Click the link above for layout file of this "about page" to learn more about Jekyll with HTML. 
+                </p>
+
+                <p style = "text-align: center;" class = "my-paragraph">
+                  The layout file begins with a section of YAML front matter enclosed by triple dashes (---). In Jekyll, front matter is used to define metadata for the page. In this case, it specifies the layout to use ("default") and the title of the page ("About").
+                </p>
+
+                <p style = "text-align: center;" class = "my-paragraph">
+                  Linking CSS and JavaScript: You include external CSS and JavaScript files using the HTML link and script elements. In this case, you are referencing CSS and JavaScript files from the "assets/css" and "assets/scripts" directories, respectively. Note the use of {{ site.baseurl }} in the file paths. This allows Jekyll to generate the correct paths when building the site, taking into account the base URL of your site.
+                </p>
+                
+              </div>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+    </div>
+  </section>
+
+  <section class="top-section full-screen-section">
+      <div class="left">
+        <section class="sec-1">
+            <div class="container reveal fade-bottom">
+              <h2>Tailwind</h2>
+              <div class="text-container">
+                <div class="text-box">
+                  <h1 style = "text-align: center;"><a href="https://github.com/CSA-Tri-1/DADDiJkstra-frontend/blob/main/assets/css/main_raw.css">LINK</a></h1>
+                  <p style = "text-align: center;" class = "my-paragraph">
+                   Link above directs to Tailwind CSS fonts
+                  </p>
+
+                  <p style = "text-align: center;" class = "my-paragraph">
+                    This layout shows the use of Apple's custom font definitions and text size 
+                    configurations, enabling consistent typography and styling throughout the project. 
+                    Tailwind's utility classes are leveraged for efficient and scalable 
+                    design, and custom font faces are specified for a personalized touch.
+                  </p>
+                </div>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+      </div>
+    </section>
 
 <!-- 
 
