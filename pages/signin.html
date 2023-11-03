@@ -41,24 +41,6 @@ title: SignIn
         const put_url = "http://localhost:8084/api/usr/update";
         let currentField = "emailField";
 
-        // //
-        // //set a cookie email
-        // function setCookie(name, email, hours) {
-        // const expires = new Date();
-        // expires.setTime(expires.getTime() + (hours * 60 * 60 * 1000));
-        // document.cookie = `${name}=${email};expires=${expires.toUTCString()};path=/`;
-        // }
-
-        // // const email = emailInput.value;
-        // // setCookie("email", email, 1); // Expires in 1 hour
-
-        // // Function to get a cookie email
-        // function getCookie(name) {
-        // const value = `; ${document.cookie}`;
-        // const parts = value.split(`; ${name}=`);
-        // if (parts.length === 2) return parts.pop().split(';').shift();
-        // }
-        // //
         function showNextField() {
             const emailField = document.getElementById("emailField");
             const passwordField = document.getElementById("passwordField");
@@ -69,14 +51,12 @@ title: SignIn
                 document.querySelector("button").textContent = "Log In";
             } else if (currentField === "passwordField") {
                 login_user();
-                read_pull(); //
             }
 
         
         const signinForm = document.getElementById("signinForm");
         signinForm.addEventListener("submit", function (e) {
         login_user(e);
-        read_pull(); //
             })
         }
 
@@ -112,7 +92,6 @@ title: SignIn
                     "Content-Type": "application/json",
                 },
             };
-        // new code begin
             // Fetch JWT 
             fetch(login_url, authOptions)
                 .then(response => {
@@ -122,16 +101,27 @@ title: SignIn
                         return;
                     }
                     if (response.ok) {
+                        // Successfully logged in, now set the email in a cookie
+                        setCookie("email", emailInput.value, 1); // Set the email cookie for an hour
                         console.log('Successful fetch');
+                        read_pull();
                         return;
-                        window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
                     }
                     // Success!!!
                     // Redirect to Database location
                 });
             }
         }
-        // new code end
+
+        // Function to set a cookie
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        // read
         function read_pull() {
             // Set options for cross-origin header request
             const options = {
@@ -147,36 +137,52 @@ title: SignIn
             // Fetch the API
             fetch(read_url, options)
                 .then(response => {
-                    if (response.status === 200) {
-                        console.log(response);
-                        alert("Signed In!");
-                        return;
-                        window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
-                    }
-                    if (response.status !== 200) {
-                        const errorMsg = 'Database response error: ' + response.status;
-                        console.log(errorMsg);
-                        alert("Bad password/username input");
-                        return;
-                        window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
-                    }
                     if (response.status === 401) {
                         alert("Bad password/username input");
-                        console.log(errorMsg);
+                        console.error("Bad password/username input");
                         return;
+                    } else if (response.status === 200) {
+                        console.log("Success loser!");
+                        // Only show the alert if the login was successful
+                        alert("Successful Signin!");
+                        // Redirect after alert
                         window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
+                        return;
+                    } else {
+                        const errorMsg = 'Database response error: ' + response.status;
+                        alert("Uh oh, something went wrong :(");
+                        console.error(errorMsg);
+                        return;
                     }
-                    // response.json().then(data => {
-                    // // const jwtToken = data.jwt;
-                    // // const email = emailInput.value;
-                    // // setCookie("email", email, 1); // Expires in 1 hour
-                    // // setCookie("jwt", jwtToken, 1); // Expires in 1 hour
-                    // console.log(response);
-                    // alert("Signed In!")
-                    // return;
-                    // });
-                })
-                };
+            })
+            .catch(error => {
+                // Handle network errors or exceptions here
+                console.error("Network error:", error);
+            });
+        }
+
+        function getEmailFromCookie() {
+            const name = "email=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookieArray = decodedCookie.split(';');
+            for (let i = 0; i < cookieArray.length; i++) {
+                let cookie = cookieArray[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(name) === 0) {
+                    return cookie.substring(name.length, cookie.length);
+                }
+            }
+            return "";
+        }
+        // Example of how to use the getEmailFromCookie function
+        const storedEmail = getEmailFromCookie();
+        if (storedEmail) {
+            console.log("Email from cookie:", storedEmail);
+        } else {
+            console.log("Email cookie not found");
+        }
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
