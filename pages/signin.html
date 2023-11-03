@@ -140,11 +140,12 @@ title: SignIn
             fetch(read_url, options)
                 .then(response => {
                     if (response.status === 200) {
-                        alert("Signed In!");
+                        console.log("Success loser!");
+                        return;
                         window.location.href = "https://csa-tri-1.github.io/DADDiJkstra-frontend/pages/app";
                     } else if (response.status === 401) {
                         alert("Bad password/username input");
-                        console.error("Bad password/username input"); // Use console.error for errors
+                        console.error("Bad password/username input");
                     } else {
                         const errorMsg = 'Database response error: ' + response.status;
                         alert("Uh oh, something went wrong :(");
@@ -155,7 +156,7 @@ title: SignIn
                     // Handle network errors or exceptions here
                     console.error("Network error:", error);
                 });
-                }
+        }
     </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
