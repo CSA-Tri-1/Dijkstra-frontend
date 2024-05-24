@@ -12,8 +12,8 @@ All relevant information about the site itself can be found in [this qualificati
 
 ## Relevant Repositories
 
-- Springboot backend: [Click here]
-- Lessons Repository: [Click here]
+- Springboot backend: [Click here](https://github.com/CSA-Tri-1/DADDJbackend)
+- Lessons Repository: [Click here](https://github.com/CSA-Tri-1/DADDYJlessons)
 
 ## Scrum Board
 
