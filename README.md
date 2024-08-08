@@ -1,5 +1,5 @@
 # DADDiJkstra
-
+Project to visualize the Dijkstra Algorithm
 All relevant information about the site itself can be found in [this qualification issue](https://github.com/CSA-Tri-1/CSATri1/issues/29).
 
 ## Runtime Links
